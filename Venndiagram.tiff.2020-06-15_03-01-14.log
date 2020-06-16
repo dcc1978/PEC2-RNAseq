@@ -1,0 +1,8 @@
+INFO [2020-06-15 03:01:14] [[1]]
+INFO [2020-06-15 03:01:14] list(SFIvsNIT = rownames(sfi_nit_adj), ELIvsNIT = rownames(eli_nit_adj), 
+INFO [2020-06-15 03:01:14]     ELIvsSFI = rownames(eli_sfi_adj), fill = c("blue", "red", 
+INFO [2020-06-15 03:01:14]         "green"))
+INFO [2020-06-15 03:01:14] 
+INFO [2020-06-15 03:01:14] $filename
+INFO [2020-06-15 03:01:14] [1] "Venndiagram.tiff"
+INFO [2020-06-15 03:01:14] 

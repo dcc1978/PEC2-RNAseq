@@ -1,0 +1,1215 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={RNAseq Analysis PEC2},
+  pdfauthor={David Cartoixà Cartoixà},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+\title{RNAseq Analysis PEC2}
+\author{David Cartoixà Cartoixà}
+\date{9/6/2020}
+
+\begin{document}
+\maketitle
+
+\textbf{INDICE DE CONTENIDOS}
+
+1.\protect\hyperlink{id1}{Abstract} 2.\protect\hyperlink{id2}{Objetivo
+del estudio y datos} 2.1.\protect\hyperlink{id3}{Objetivos del estudio}
+2.2.\protect\hyperlink{id4}{Preparación del entorno de trabajo}
+2.3.\protect\hyperlink{id5}{Selección de las muestras}
+3.\protect\hyperlink{id6}{Materiales y métodos}
+3.1.\protect\hyperlink{id7}{Creación del objeto DESeqDataSet}
+3.2.\protect\hyperlink{id8}{Filtrado de los datos}
+3.3.\protect\hyperlink{id9}{Estabilización de la varianza}
+3.4.\protect\hyperlink{id10}{Heatmap}
+3.5.\protect\hyperlink{id11}{Análisis de componentes principales}
+3.6.\protect\hyperlink{id12}{Análisis de expresión diferencial}
+3.7.\protect\hyperlink{id13}{Plot MA de comparación SFI vs NIT}
+3.8.\protect\hyperlink{id14}{Plot MA de comparación ELI vs NIT}
+3.9.\protect\hyperlink{id15}{Plot MA de comparación ELI vs SFI}
+3.10.\protect\hyperlink{id16}{Diagrama de Venn}
+3.11.\protect\hyperlink{id17}{Heatmap de los 10 genes más
+significativos} 3.12.\protect\hyperlink{id18}{Anotación de los genes}
+3.13.\protect\hyperlink{id19}{Identificación de los genes}
+4.\protect\hyperlink{id20}{Discusión}
+5.\protect\hyperlink{id21}{Apéndice}
+6.\protect\hyperlink{id22}{Bibliografia}
+
+\hypertarget{abstract}{%
+\subsection{1.Abstract}\label{abstract}}
+
+En el presente estudio estudiaremos los perfiles de expresión a partir
+de los datos de expresión (RNAseq) pertenecientes a un análisis del
+tiroides den donde se comparan tres tipos de infiltración medido en un
+total de 292 muestras pertenecientes a tres grupos:
+
+· Not infiltrated tissues (NIT): 236 muestras · Small focal infiltrates
+(SFI):42 muestras · Extensive lymphoid infiltrates (ELI): 14 muestras
+
+Extraeremos al azar 10 muestras de cada grupo para estudiar si existen
+diferencias significativas entre ellos en cuanto a perfiles de
+expresión.
+
+\hypertarget{objetivo-del-estudio-y-datos}{%
+\subsection{2.Objetivo del estudio y
+datos}\label{objetivo-del-estudio-y-datos}}
+
+\hypertarget{objetivos-del-estudio}{%
+\subsection{2.1. Objetivos del estudio}\label{objetivos-del-estudio}}
+
+Efectuaremos un análisis de los datos RNA-Seq de los tres grupos
+mencionados para determinar cuáles son los genes diferencialmente
+expresados entre los tres grupos.
+
+\hypertarget{preparaciuxf3n-del-entorno-de-trabajo}{%
+\subsection{2.2 Preparación del entorno de
+trabajo}\label{preparaciuxf3n-del-entorno-de-trabajo}}
+
+Primeramente definiremos el directorio de trabajo, y crearemos tres
+carpetas: ``data'' donde almacenaremos los archivos .CEL descomprimidos
+y los archivos generados por nosotros target; una carpeta ``results''
+donde registraremos los resultados obtenidos y finalmente la carpeta
+``figures'' en la cual almacenaremos las figuras del estudio.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\OperatorTok{>}\StringTok{ }\KeywordTok{setwd}\NormalTok{(}\StringTok{"."}\NormalTok{)}
+\OperatorTok{>}\StringTok{ }\KeywordTok{dir.create}\NormalTok{(}\StringTok{"data"}\NormalTok{)}
+\OperatorTok{>}\StringTok{ }\KeywordTok{dir.create}\NormalTok{(}\StringTok{"results"}\NormalTok{)}
+\OperatorTok{>}\StringTok{ }\KeywordTok{dir.create}\NormalTok{(}\StringTok{"figures"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{selecciuxf3n-de-las-muestras}{%
+\subsection{2.3 Selección de las
+muestras}\label{selecciuxf3n-de-las-muestras}}
+
+El archivo targets.csv y counts.csv contiene la información de las
+muestras de un estudio obtenido del repositorio (GTEx). Seleccionaremos
+30 muestras aleatoriamente, 10 de cada grupo.
+
+\begin{longtable}[]{@{}lllrlllll@{}}
+\toprule
+Experiment & SRA\_Sample & Sample\_Name & Grupo\_analisis & body\_site &
+molecular\_data\_type & sex & Group & ShortName\tabularnewline
+\midrule
+\endhead
+SRX567480 & SRS626942 & GTEX-111CU-0226-SM-5GZXC & 1 & Thyroid &
+Allele-Specific Expression & male & NIT & 111CU\_NIT\tabularnewline
+SRX615964 & SRS644174 & GTEX-111FC-1026-SM-5GZX1 & 1 & Thyroid & RNA Seq
+(NGS) & male & NIT & 111FC\_NIT\tabularnewline
+SRX563960 & SRS625636 & GTEX-111VG-0526-SM-5N9BW & 3 & Thyroid & RNA Seq
+(NGS) & male & ELI & 111VG\_ELI\tabularnewline
+SRX564185 & SRS625665 & GTEX-111YS-0726-SM-5GZY8 & 1 & Thyroid &
+Allele-Specific Expression & male & NIT & 111YS\_NIT\tabularnewline
+SRX559141 & SRS624025 & GTEX-1122O-0226-SM-5N9DA & 1 & Thyroid & RNA Seq
+(NGS) & female & NIT & 1122O\_NIT\tabularnewline
+SRX561718 & SRS625313 & GTEX-1128S-0126-SM-5H12S & 1 & Thyroid &
+Allele-Specific Expression & female & NIT & 1128S\_NIT\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{longtable}[]{@{}lrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr@{}}
+\toprule
+& GTEX.111CU.0226.SM.5GZXC & GTEX.111FC.1026.SM.5GZX1 &
+GTEX.111VG.0526.SM.5N9BW & GTEX.111YS.0726.SM.5GZY8 &
+GTEX.1122O.0226.SM.5N9DA & GTEX.1128S.0126.SM.5H12S &
+GTEX.113JC.0126.SM.5EGJW & GTEX.117XS.0526.SM.5987Q &
+GTEX.117YW.0126.SM.5EGGN & GTEX.117YX.1226.SM.5H11S &
+GTEX.1192W.0126.SM.5EGGS & GTEX.1192X.1126.SM.5EGGU &
+GTEX.11DXX.0226.SM.5P9HL & GTEX.11DXY.0426.SM.5H12R &
+GTEX.11DXZ.0926.SM.5N9CG & GTEX.11DYG.0826.SM.5N9GH &
+GTEX.11DZ1.2726.SM.5A5KH & GTEX.11EI6.0726.SM.59866 &
+GTEX.11EM3.0126.SM.5985K & GTEX.11EMC.0226.SM.5EGLP &
+GTEX.11EQ8.0826.SM.5N9FG & GTEX.11EQ9.0626.SM.5A5K1 &
+GTEX.11GS4.0826.SM.5986J & GTEX.11GSO.0626.SM.5A5LW &
+GTEX.11I78.0526.SM.5986A & GTEX.11LCK.0526.SM.5A5M9 &
+GTEX.11NSD.0126.SM.5987F & GTEX.11NUK.1026.SM.5HL5J &
+GTEX.11NV4.0626.SM.5N9BR & GTEX.11O72.2326.SM.5BC7H &
+GTEX.11OF3.0626.SM.5BC4Y & GTEX.11P7K.0226.SM.5986Z &
+GTEX.11P81.0126.SM.5HL5Y & GTEX.11P82.0226.SM.5HL4O &
+GTEX.11TT1.1126.SM.5P9GV & GTEX.11TTK.0826.SM.5N9EG &
+GTEX.11TUW.0226.SM.5LU8X & GTEX.11UD2.0626.SM.5GU6L &
+GTEX.11VI4.0226.SM.5GU6C & GTEX.11XUK.0226.SM.5EQLW &
+GTEX.11ZTS.1126.SM.5LU9X & GTEX.11ZTT.1026.SM.5EQKF &
+GTEX.11ZVC.0126.SM.5986G & GTEX.1211K.0726.SM.5FQUW &
+GTEX.1212Z.0426.SM.5FQT6 & GTEX.12584.0826.SM.5FQSK &
+GTEX.12696.0326.SM.5EGL4 & GTEX.1269C.0226.SM.5EGKS &
+GTEX.12BJ1.0426.SM.5FQSO & GTEX.12WSC.0826.SM.5EQ5Q &
+GTEX.12WSD.0926.SM.5GCNL & GTEX.12WSG.0226.SM.5EGIF &
+GTEX.12WSH.0226.SM.5GCOG & GTEX.12WSJ.0326.SM.5GCMT &
+GTEX.12WSK.0926.SM.5CVNQ & GTEX.12WSL.0626.SM.5GCOY &
+GTEX.12WSN.0726.SM.5GCMS & GTEX.12ZZX.1226.SM.5EGHS &
+GTEX.12ZZY.0826.SM.5EQMT & GTEX.12ZZZ.1226.SM.59HK1 &
+GTEX.13111.0226.SM.5EQ55 & GTEX.13112.0326.SM.5P9IW &
+GTEX.13113.0126.SM.5LZVX & GTEX.1313W.0726.SM.5EGK1 &
+GTEX.131XE.0126.SM.5LZVC & GTEX.131XF.1826.SM.5EGKG &
+GTEX.131XG.0226.SM.5IFG1 & GTEX.131XH.0526.SM.5DUX7 &
+GTEX.131YS.0726.SM.5P9G9 & GTEX.132AR.1126.SM.5P9GA &
+GTEX.132NY.1026.SM.5P9IY & GTEX.132QS.0326.SM.5IJFN &
+GTEX.133LE.0326.SM.5P9G4 & GTEX.1399R.0126.SM.5IFEV &
+GTEX.1399T.0126.SM.5KM15 & GTEX.1399U.0326.SM.5P9G5 &
+GTEX.139T6.0326.SM.5J2LY & GTEX.139TS.0126.SM.5K7XJ &
+GTEX.139UW.0126.SM.5KM1B & GTEX.139YR.1226.SM.5IFEU &
+GTEX.13CF3.0926.SM.5LZZC & GTEX.13D11.0226.SM.5LZXL &
+GTEX.13FH7.0126.SM.5KLZ1 & GTEX.13FHO.0926.SM.5N9EW &
+GTEX.13FHP.0926.SM.5L3EC & GTEX.13FLV.0226.SM.5J2OF &
+GTEX.13FLW.0326.SM.5J2M4 & GTEX.13FTW.0626.SM.5IFEX &
+GTEX.13FTY.0726.SM.5J2OH & GTEX.13FXS.0726.SM.5LZXJ &
+GTEX.13G51.1226.SM.5K7Z3 & GTEX.13IVO.0926.SM.5KLZP &
+GTEX.13JVG.0926.SM.5IJE1 & GTEX.13N11.1026.SM.5K7XQ &
+GTEX.13N1W.0826.SM.5MR5J & GTEX.13N2G.0726.SM.5MR38 &
+GTEX.13NYB.0726.SM.5MR4J & GTEX.13NYC.2426.SM.5MR3K &
+GTEX.13NZ8.0226.SM.5J2OK & GTEX.13NZ9.1126.SM.5MR37 &
+GTEX.13NZA.1026.SM.5MR48 & GTEX.13O1R.0826.SM.5J2MB &
+GTEX.13O21.2226.SM.5MR3L & GTEX.13O3O.0926.SM.5KM1F &
+GTEX.13O3P.0726.SM.5J2OM & GTEX.13O3Q.0626.SM.5IJG1 &
+GTEX.13O61.0226.SM.5KM52 & GTEX.13OVG.0226.SM.5LU93 &
+GTEX.13OVI.0826.SM.5KLZ8 & GTEX.13OVJ.0626.SM.5J2O2 &
+GTEX.13OW5.0626.SM.5J2N2 & GTEX.13OW6.0726.SM.5L3FX &
+GTEX.13OW7.0826.SM.5L3EL & GTEX.13OW8.0126.SM.5IJE5 &
+GTEX.13PDP.1026.SM.5L3FA & GTEX.13PL6.1026.SM.5L3E5 &
+GTEX.13PVQ.0726.SM.5L3GI & GTEX.13QBU.0626.SM.5J2OG &
+GTEX.13QJC.0826.SM.5RQKC & GTEX.13RTK.0326.SM.5RQHS &
+GTEX.13S86.1126.SM.5RQJX & GTEX.13U4I.0526.SM.5LU59 &
+GTEX.13VXT.0626.SM.5SIA1 & GTEX.13VXU.0826.SM.5KLZ2 &
+GTEX.13W46.0926.SM.5LU3T & GTEX.13X6H.0526.SM.5LU4Q &
+GTEX.13X6J.0826.SM.5LU32 & GTEX.13YAN.0926.SM.5O9C3 &
+GTEX.144GL.1226.SM.5O9A4 & GTEX.144GM.0226.SM.5Q5CB &
+GTEX.144GO.0126.SM.5LUAO & GTEX.145LU.0426.SM.5O9AH &
+GTEX.145ME.0126.SM.5S2QM & GTEX.145MG.0826.SM.5Q5C2 &
+GTEX.145MH.0426.SM.5LU8T & GTEX.145MI.1126.SM.5O9AK &
+GTEX.146FQ.0726.SM.5LUA7 & GTEX.146FR.0326.SM.5SI8U &
+GTEX.14753.0926.SM.5Q5BI & GTEX.147F4.0826.SM.5QGRB &
+GTEX.147GR.0726.SM.5S2PL & GTEX.148VJ.0726.SM.5LU8J &
+GTEX.1497J.0126.SM.5Q5BK & GTEX.14A5H.0726.SM.5Q5DW &
+GTEX.14A6H.2426.SM.5Q5BO & GTEX.14ABY.0926.SM.5Q5DY &
+GTEX.14AS3.0226.SM.5Q5B6 & GTEX.14ASI.0726.SM.5Q5DC &
+GTEX.14BMU.0226.SM.5S2QA & GTEX.14C38.0826.SM.5S2U8 &
+GTEX.14E6C.2626.SM.5RQJP & GTEX.14ICL.0426.SM.5RQJ3 &
+GTEX.N7MS.2326.SM.2HMLD & GTEX.NFK9.0726.SM.2HMJW &
+GTEX.OHPK.2626.SM.2HMK9 & GTEX.OHPM.2626.SM.33HC5 &
+GTEX.OIZG.0226.SM.2TC5L & GTEX.OIZI.0726.SM.2XCEI &
+GTEX.OXRK.0626.SM.2HMJ5 & GTEX.OXRL.2626.SM.2I3F1 &
+GTEX.OXRO.1226.SM.48TDL & GTEX.OXRP.0326.SM.33HBJ &
+GTEX.P4PQ.2626.SM.33HC9 & GTEX.P4QS.2626.SM.2I3EV &
+GTEX.P4QT.2626.SM.2I3FM & GTEX.P78B.0526.SM.2I5F7 &
+GTEX.PLZ4.1226.SM.2I5FE & GTEX.PWN1.2626.SM.2I3FH &
+GTEX.PX3G.2626.SM.2I3EG & GTEX.Q2AG.0826.SM.2HMKF &
+GTEX.Q2AH.0726.SM.2I3EA & GTEX.Q2AI.0326.SM.2I3EK &
+GTEX.Q734.0526.SM.2I3EH & GTEX.QDVJ.0226.SM.2I5FV &
+GTEX.QDVN.0626.SM.2I3FP & GTEX.QEG5.0826.SM.2I5GF &
+GTEX.QEL4.0726.SM.3GIJ5 & GTEX.QLQ7.0726.SM.2I5G2 &
+GTEX.QV31.0726.SM.3GAEG & GTEX.QV44.0826.SM.2S1RG &
+GTEX.QXCU.0326.SM.2TC63 & GTEX.R3RS.0726.SM.3GIJR &
+GTEX.R53T.0526.SM.3GADL & GTEX.R55C.0626.SM.2TF4Q &
+GTEX.R55E.0826.SM.2TC5M & GTEX.R55G.0726.SM.2TC6J &
+GTEX.REY6.0526.SM.2TF5M & GTEX.RM2N.0526.SM.2TF4N &
+GTEX.RN64.0626.SM.2TC5V & GTEX.RNOR.0926.SM.2TF56 &
+GTEX.RTLS.0626.SM.5SI7Z & GTEX.RU1J.0226.SM.2TF5Y &
+GTEX.RU72.0126.SM.2TF6Z & GTEX.RUSQ.1026.SM.2TF6V &
+GTEX.RVPV.1226.SM.2TF73 & GTEX.RWS6.0626.SM.2XCAS &
+GTEX.RWSA.0826.SM.2XCBF & GTEX.S32W.0726.SM.2XCBL &
+GTEX.S341.0226.SM.5S2VG & GTEX.S7SE.0726.SM.2XCD7 &
+GTEX.S7SF.0226.SM.5SI7H & GTEX.SE5C.0726.SM.4BRWY &
+GTEX.SIU8.0626.SM.2XCDN & GTEX.SJXC.0726.SM.2XCFJ &
+GTEX.T2IS.0626.SM.32QP6 & GTEX.T5JW.1226.SM.3GACY &
+GTEX.T6MN.0626.SM.32PM9 & GTEX.T6MO.0226.SM.32QOL &
+GTEX.T8EM.0226.SM.3DB7C & GTEX.TKQ1.0126.SM.33HB3 &
+GTEX.TMMY.0826.SM.33HB9 & GTEX.TSE9.0626.SM.3DB8B &
+GTEX.U8T8.2326.SM.3DB96 & GTEX.VUSG.0426.SM.3GIKD &
+GTEX.W5X1.0426.SM.3GILB & GTEX.WHPG.0226.SM.3NMB9 &
+GTEX.WHSB.1626.SM.3LK6J & GTEX.WHSE.0626.SM.4RGNF &
+GTEX.WK11.0926.SM.3NMAU & GTEX.WL46.0126.SM.3TW8I &
+GTEX.WOFL.0726.SM.3MJG4 & GTEX.WYBS.1926.SM.3NM8N &
+GTEX.WYJK.1626.SM.3NM9J & GTEX.WYVS.0326.SM.3NM9V &
+GTEX.X15G.0526.SM.3NMB7 & GTEX.X4XY.0826.SM.4E3JM &
+GTEX.X8HC.0726.SM.46MWG & GTEX.XBED.0126.SM.47JY7 &
+GTEX.XBEW.0126.SM.4AT66 & GTEX.XGQ4.0426.SM.4AT4I &
+GTEX.XLM4.0726.SM.4AT64 & GTEX.XMK1.0626.SM.4B65A &
+GTEX.XUW1.1026.SM.4BONY & GTEX.XUZC.0126.SM.4BOO6 &
+GTEX.XV7Q.0326.SM.4BRVM & GTEX.XXEK.1326.SM.4BRV1 &
+GTEX.XYKS.0826.SM.4BRVF & GTEX.Y111.1926.SM.4SOIS &
+GTEX.Y114.0626.SM.4TT98 & GTEX.Y3IK.0526.SM.4WWE3 &
+GTEX.Y5LM.0626.SM.4V6G4 & GTEX.Y5V5.0326.SM.5RQJG &
+GTEX.Y5V6.0526.SM.4VBRV & GTEX.Y8E4.0126.SM.4VBQ2 &
+GTEX.Y9LG.0426.SM.4VBRT & GTEX.YB5E.0626.SM.4VDSE &
+GTEX.YB5K.0526.SM.5LUAS & GTEX.YEC3.0826.SM.4WWFP &
+GTEX.YEC4.0626.SM.5CVLU & GTEX.YF7O.0726.SM.4W213 &
+GTEX.YFC4.2626.SM.5P9FQ & GTEX.YFCO.0326.SM.4W1ZP &
+GTEX.YJ89.0726.SM.5P9F7 & GTEX.Z9EW.0226.SM.5CVM7 &
+GTEX.ZA64.0426.SM.5HL96 & GTEX.ZAB5.0726.SM.5P9JG &
+GTEX.ZAJG.0726.SM.5HL9A & GTEX.ZAK1.0726.SM.5HL8Q &
+GTEX.ZC5H.0626.SM.5LU9K & GTEX.ZDYS.0626.SM.5J2N5 &
+GTEX.ZE7O.1126.SM.57WC8 & GTEX.ZF28.0826.SM.4WKGJ &
+GTEX.ZGAY.1026.SM.4WWBR & GTEX.ZLFU.0626.SM.4WWBO &
+GTEX.ZLV1.0126.SM.4WWBZ & GTEX.ZLWG.0526.SM.4WWFB &
+GTEX.ZPCL.0126.SM.4WWC8 & GTEX.ZPU1.0426.SM.4WWCA &
+GTEX.ZQG8.0926.SM.57WFF & GTEX.ZT9W.0226.SM.4YCCZ &
+GTEX.ZT9X.0226.SM.51MT2 & GTEX.ZTPG.0826.SM.5DUVC &
+GTEX.ZTSS.0226.SM.59877 & GTEX.ZTX8.0626.SM.59HKC &
+GTEX.ZUA1.0926.SM.4YCDX & GTEX.ZV6S.0226.SM.59HJT &
+GTEX.ZV7C.0126.SM.57WDE & GTEX.ZVP2.0426.SM.57WC2 &
+GTEX.ZVT3.0726.SM.5GICN & GTEX.ZVZP.1026.SM.5GICI &
+GTEX.ZVZQ.0626.SM.59HJU & GTEX.ZXG5.0926.SM.5NQ8H &
+GTEX.ZY6K.0226.SM.5SIAY & GTEX.ZYFC.0926.SM.5GZWW &
+GTEX.ZYFD.0826.SM.5NQ9A & GTEX.ZYFG.0626.SM.5GZYA &
+GTEX.ZYT6.0426.SM.5GID3 & GTEX.ZYVF.1126.SM.5E458 &
+GTEX.ZYW4.1126.SM.5SI99 & GTEX.ZYY3.1926.SM.5GZXS &
+GTEX.ZZ64.0126.SM.5GZXA & GTEX.ZZPU.1326.SM.5GZWS\tabularnewline
+\midrule
+\endhead
+ENSG00000223972.4 & 7 & 0 & 1 & 4 & 2 & 2 & 0 & 3 & 1 & 3 & 3 & 2 & 4 &
+0 & 1 & 4 & 0 & 1 & 2 & 5 & 1 & 6 & 0 & 0 & 3 & 0 & 0 & 5 & 3 & 0 & 2 &
+4 & 0 & 5 & 2 & 3 & 4 & 1 & 1 & 0 & 6 & 3 & 0 & 3 & 2 & 1 & 5 & 1 & 1 &
+4 & 0 & 3 & 3 & 4 & 2 & 2 & 1 & 2 & 2 & 0 & 3 & 3 & 1 & 2 & 1 & 5 & 0 &
+0 & 1 & 0 & 3 & 1 & 4 & 3 & 2 & 5 & 1 & 0 & 2 & 4 & 2 & 0 & 5 & 4 & 2 &
+5 & 2 & 0 & 1 & 5 & 0 & 4 & 4 & 2 & 0 & 2 & 1 & 0 & 1 & 0 & 1 & 3 & 1 &
+2 & 2 & 2 & 2 & 4 & 2 & 5 & 1 & 5 & 0 & 2 & 0 & 0 & 1 & 7 & 0 & 0 & 1 &
+2 & 1 & 1 & 2 & 2 & 1 & 1 & 3 & 5 & 1 & 2 & 1 & 0 & 3 & 0 & 1 & 0 & 2 &
+0 & 2 & 1 & 2 & 2 & 0 & 1 & 0 & 0 & 2 & 10 & 0 & 2 & 8 & 9 & 17 & 12 & 6
+& 0 & 11 & 8 & 1 & 3 & 13 & 4 & 5 & 8 & 5 & 5 & 8 & 10 & 1 & 3 & 2 & 15
+& 6 & 4 & 4 & 6 & 3 & 2 & 3 & 1 & 9 & 9 & 3 & 3 & 1 & 3 & 2 & 3 & 4 & 4
+& 3 & 8 & 5 & 6 & 4 & 6 & 2 & 4 & 3 & 1 & 3 & 4 & 0 & 1 & 1 & 3 & 8 & 8
+& 3 & 3 & 3 & 4 & 5 & 0 & 8 & 4 & 1 & 0 & 1 & 7 & 5 & 6 & 26 & 1 & 0 & 3
+& 1 & 0 & 1 & 9 & 2 & 0 & 2 & 3 & 4 & 2 & 3 & 5 & 2 & 1 & 3 & 11 & 5 & 3
+& 6 & 4 & 1 & 4 & 1 & 7 & 4 & 3 & 2 & 1 & 3 & 0 & 3 & 5 & 1 & 3 & 1 & 8
+& 2 & 5 & 1 & 3 & 3 & 18 & 1 & 1 & 3 & 3 & 1 & 5 & 3 & 5 & 1 & 5 & 4 & 1
+& 2 & 1 & 0 & 2 & 5 & 2 & 1 & 6 & 7 & 3\tabularnewline
+ENSG00000227232.4 & 401 & 1064 & 474 & 395 & 732 & 631 & 331 & 511 & 483
+& 529 & 573 & 674 & 825 & 663 & 768 & 954 & 525 & 619 & 669 & 786 & 802
+& 640 & 533 & 544 & 507 & 315 & 408 & 683 & 1301 & 633 & 518 & 840 & 319
+& 634 & 524 & 1241 & 627 & 616 & 571 & 419 & 547 & 580 & 719 & 426 & 452
+& 1064 & 542 & 925 & 410 & 605 & 1029 & 369 & 641 & 892 & 731 & 335 &
+481 & 679 & 491 & 424 & 540 & 600 & 687 & 890 & 623 & 656 & 325 & 766 &
+1487 & 907 & 781 & 604 & 1175 & 517 & 855 & 934 & 639 & 485 & 430 & 240
+& 441 & 426 & 576 & 907 & 1517 & 1572 & 1245 & 561 & 675 & 1564 & 878 &
+700 & 568 & 427 & 851 & 854 & 1380 & 949 & 1164 & 1002 & 902 & 460 & 885
+& 754 & 808 & 791 & 624 & 719 & 723 & 1307 & 1042 & 723 & 629 & 910 &
+1487 & 561 & 760 & 695 & 825 & 627 & 800 & 636 & 899 & 440 & 872 & 468 &
+720 & 960 & 913 & 658 & 482 & 851 & 588 & 710 & 544 & 890 & 467 & 514 &
+582 & 948 & 542 & 564 & 751 & 742 & 1325 & 775 & 834 & 1246 & 423 & 879
+& 655 & 703 & 493 & 889 & 484 & 772 & 313 & 523 & 873 & 690 & 967 & 1205
+& 1859 & 513 & 825 & 548 & 489 & 297 & 636 & 759 & 874 & 442 & 749 & 944
+& 511 & 978 & 511 & 666 & 450 & 412 & 453 & 176 & 782 & 302 & 533 & 134
+& 590 & 406 & 1311 & 807 & 1210 & 415 & 323 & 471 & 304 & 801 & 852 &
+296 & 457 & 422 & 487 & 622 & 899 & 548 & 976 & 541 & 892 & 909 & 1688 &
+1388 & 979 & 1704 & 841 & 565 & 560 & 658 & 883 & 381 & 895 & 1133 & 837
+& 730 & 980 & 820 & 810 & 1071 & 879 & 766 & 473 & 492 & 647 & 568 & 688
+& 445 & 837 & 818 & 432 & 810 & 688 & 1372 & 941 & 424 & 482 & 852 &
+1034 & 700 & 2278 & 705 & 365 & 912 & 1472 & 1000 & 1325 & 450 & 388 &
+676 & 755 & 555 & 644 & 637 & 713 & 1018 & 630 & 1058 & 689 & 1023 & 534
+& 904 & 554 & 431 & 830 & 524 & 619 & 586 & 739 & 515 & 990 & 659 & 742
+& 529 & 1560 & 740 & 587 & 1051 & 643 & 502 & 772 & 838 & 584 & 1003 &
+732 & 555\tabularnewline
+ENSG00000243485.2 & 4 & 0 & 1 & 2 & 1 & 0 & 1 & 1 & 0 & 0 & 1 & 3 & 1 &
+0 & 0 & 0 & 0 & 2 & 2 & 0 & 1 & 4 & 1 & 0 & 0 & 0 & 1 & 3 & 1 & 2 & 0 &
+0 & 2 & 2 & 1 & 1 & 0 & 0 & 2 & 0 & 1 & 0 & 1 & 1 & 0 & 2 & 0 & 0 & 2 &
+1 & 0 & 1 & 0 & 5 & 3 & 0 & 0 & 2 & 2 & 0 & 3 & 1 & 0 & 1 & 0 & 1 & 1 &
+1 & 1 & 1 & 0 & 1 & 2 & 2 & 2 & 3 & 4 & 0 & 0 & 1 & 1 & 3 & 4 & 3 & 0 &
+1 & 1 & 1 & 1 & 0 & 1 & 0 & 1 & 0 & 0 & 0 & 1 & 0 & 2 & 1 & 0 & 0 & 1 &
+3 & 1 & 0 & 1 & 2 & 2 & 4 & 1 & 0 & 1 & 0 & 1 & 0 & 1 & 0 & 1 & 0 & 2 &
+0 & 0 & 0 & 1 & 1 & 0 & 2 & 1 & 3 & 1 & 1 & 2 & 0 & 0 & 0 & 2 & 1 & 0 &
+0 & 1 & 0 & 1 & 1 & 2 & 2 & 1 & 0 & 0 & 0 & 2 & 2 & 5 & 5 & 10 & 3 & 1 &
+2 & 3 & 8 & 0 & 4 & 6 & 9 & 4 & 11 & 1 & 0 & 5 & 7 & 8 & 8 & 2 & 10 & 7
+& 1 & 2 & 3 & 4 & 0 & 4 & 0 & 2 & 4 & 1 & 1 & 3 & 4 & 0 & 4 & 1 & 1 & 4
+& 5 & 3 & 1 & 4 & 6 & 1 & 0 & 1 & 1 & 2 & 2 & 1 & 2 & 1 & 5 & 6 & 1 & 3
+& 1 & 1 & 1 & 2 & 0 & 2 & 1 & 1 & 2 & 1 & 0 & 1 & 0 & 6 & 1 & 1 & 3 & 1
+& 2 & 0 & 1 & 1 & 0 & 0 & 0 & 0 & 0 & 4 & 1 & 3 & 0 & 3 & 4 & 5 & 2 & 1
+& 2 & 1 & 2 & 1 & 2 & 1 & 2 & 2 & 1 & 2 & 1 & 1 & 3 & 2 & 0 & 0 & 3 & 2
+& 4 & 3 & 1 & 1 & 5 & 2 & 1 & 0 & 0 & 2 & 1 & 0 & 2 & 0 & 2 & 3 & 3 & 1
+& 3 & 0 & 0 & 2 & 1 & 0 & 1 & 1 & 1\tabularnewline
+ENSG00000237613.2 & 2 & 0 & 0 & 1 & 1 & 0 & 0 & 4 & 0 & 1 & 0 & 1 & 0 &
+0 & 1 & 0 & 1 & 1 & 1 & 0 & 0 & 3 & 1 & 3 & 5 & 1 & 0 & 0 & 0 & 1 & 3 &
+0 & 2 & 2 & 2 & 2 & 1 & 0 & 0 & 1 & 1 & 1 & 1 & 1 & 1 & 0 & 1 & 0 & 1 &
+1 & 0 & 3 & 0 & 4 & 2 & 4 & 1 & 4 & 0 & 2 & 1 & 0 & 1 & 0 & 0 & 1 & 2 &
+2 & 2 & 1 & 2 & 0 & 3 & 1 & 2 & 2 & 5 & 1 & 0 & 2 & 2 & 4 & 3 & 2 & 0 &
+1 & 0 & 0 & 3 & 2 & 1 & 3 & 1 & 1 & 1 & 1 & 0 & 1 & 2 & 0 & 1 & 1 & 0 &
+2 & 4 & 0 & 1 & 1 & 2 & 3 & 4 & 1 & 1 & 1 & 0 & 0 & 0 & 2 & 0 & 0 & 2 &
+0 & 1 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 2 & 2 & 1 &
+0 & 0 & 1 & 3 & 2 & 0 & 0 & 1 & 0 & 0 & 1 & 1 & 0 & 5 & 3 & 7 & 3 & 1 &
+3 & 3 & 8 & 1 & 3 & 10 & 10 & 2 & 6 & 3 & 0 & 2 & 3 & 2 & 3 & 3 & 2 & 6
+& 3 & 2 & 3 & 1 & 1 & 1 & 0 & 2 & 2 & 0 & 2 & 1 & 1 & 0 & 0 & 1 & 3 & 1
+& 4 & 0 & 3 & 4 & 9 & 2 & 1 & 2 & 1 & 2 & 1 & 0 & 0 & 0 & 1 & 4 & 1 & 2
+& 1 & 0 & 1 & 1 & 0 & 1 & 0 & 1 & 0 & 0 & 1 & 0 & 1 & 7 & 3 & 1 & 4 & 2
+& 0 & 0 & 1 & 0 & 0 & 0 & 3 & 1 & 2 & 3 & 1 & 1 & 2 & 2 & 3 & 5 & 3 & 2
+& 0 & 1 & 1 & 0 & 5 & 0 & 2 & 1 & 0 & 1 & 2 & 0 & 4 & 0 & 0 & 3 & 1 & 4
+& 3 & 0 & 1 & 1 & 1 & 4 & 0 & 2 & 2 & 2 & 2 & 1 & 5 & 1 & 1 & 3 & 3 & 2
+& 2 & 0 & 0 & 1 & 4 & 0 & 2 & 1 & 2\tabularnewline
+ENSG00000268020.2 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 &
+0 & 0 & 0 & 0 & 1 & 1 & 0 & 1 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 0 &
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 1 & 1 & 2 & 1 & 0 & 0 &
+0 & 0 & 1 & 0 & 1 & 0 & 0 & 2 & 0 & 0 & 1 & 0 & 4 & 0 & 1 & 0 & 0 & 0 &
+0 & 0 & 0 & 1 & 2 & 2 & 1 & 1 & 0 & 1 & 0 & 0 & 0 & 0 & 1 & 0 & 2 & 0 &
+2 & 0 & 0 & 1 & 1 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 2 & 0 & 0 & 2 & 0 &
+0 & 1 & 1 & 2 & 2 & 3 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 1 & 0 & 1 & 0 &
+0 & 1 & 0 & 0 & 0 & 0 & 1 & 1 & 0 & 0 & 1 & 0 & 1 & 0 & 1 & 0 & 1 & 0 &
+0 & 0 & 2 & 0 & 1 & 0 & 0 & 0 & 0 & 2 & 0 & 0 & 0 & 7 & 2 & 6 & 1 & 1 &
+0 & 1 & 4 & 0 & 3 & 1 & 3 & 2 & 1 & 2 & 1 & 2 & 4 & 0 & 1 & 2 & 1 & 1 &
+2 & 4 & 2 & 2 & 0 & 0 & 0 & 1 & 2 & 0 & 1 & 1 & 0 & 2 & 1 & 0 & 1 & 1 &
+0 & 2 & 1 & 1 & 3 & 0 & 1 & 0 & 2 & 0 & 2 & 1 & 0 & 1 & 2 & 1 & 1 & 5 &
+0 & 0 & 1 & 1 & 1 & 1 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 4 & 0 & 1 & 0 & 1 &
+1 & 0 & 1 & 0 & 0 & 1 & 1 & 1 & 0 & 0 & 1 & 0 & 1 & 2 & 2 & 0 & 0 & 1 &
+1 & 0 & 3 & 0 & 3 & 2 & 0 & 1 & 0 & 0 & 1 & 0 & 1 & 0 & 0 & 0 & 0 & 0 &
+1 & 2 & 2 & 1 & 2 & 2 & 0 & 0 & 2 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 0 &
+0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0\tabularnewline
+ENSG00000240361.1 & 0 & 1 & 1 & 1 & 0 & 0 & 2 & 1 & 0 & 0 & 3 & 0 & 1 &
+3 & 0 & 0 & 0 & 1 & 1 & 1 & 0 & 3 & 0 & 0 & 3 & 1 & 0 & 2 & 1 & 1 & 1 &
+2 & 1 & 2 & 0 & 1 & 0 & 0 & 2 & 0 & 3 & 0 & 0 & 2 & 0 & 2 & 3 & 0 & 1 &
+0 & 1 & 2 & 0 & 2 & 3 & 0 & 1 & 1 & 0 & 0 & 1 & 0 & 2 & 0 & 0 & 1 & 2 &
+1 & 3 & 0 & 0 & 1 & 0 & 3 & 0 & 0 & 4 & 1 & 0 & 0 & 1 & 1 & 1 & 2 & 0 &
+2 & 3 & 0 & 1 & 0 & 0 & 0 & 3 & 0 & 0 & 1 & 0 & 0 & 0 & 1 & 1 & 0 & 1 &
+1 & 0 & 0 & 1 & 2 & 5 & 1 & 2 & 0 & 0 & 0 & 2 & 0 & 0 & 1 & 1 & 1 & 1 &
+0 & 1 & 0 & 0 & 1 & 2 & 0 & 3 & 1 & 1 & 0 & 0 & 0 & 1 & 1 & 0 & 1 & 0 &
+0 & 0 & 1 & 1 & 1 & 0 & 0 & 0 & 1 & 1 & 1 & 0 & 0 & 0 & 6 & 5 & 4 & 3 &
+3 & 2 & 2 & 1 & 1 & 6 & 4 & 2 & 4 & 1 & 2 & 3 & 5 & 1 & 0 & 2 & 4 & 2 &
+2 & 1 & 4 & 2 & 0 & 2 & 1 & 2 & 0 & 0 & 0 & 2 & 1 & 2 & 1 & 1 & 2 & 1 &
+2 & 3 & 2 & 3 & 2 & 2 & 2 & 0 & 1 & 1 & 1 & 2 & 0 & 0 & 1 & 6 & 0 & 8 &
+0 & 0 & 1 & 3 & 1 & 1 & 1 & 1 & 0 & 0 & 0 & 1 & 4 & 6 & 0 & 2 & 4 & 1 &
+0 & 0 & 0 & 0 & 1 & 0 & 2 & 1 & 1 & 2 & 2 & 0 & 0 & 2 & 3 & 3 & 2 & 3 &
+1 & 1 & 1 & 1 & 5 & 1 & 1 & 2 & 1 & 0 & 1 & 0 & 0 & 0 & 1 & 0 & 2 & 2 &
+0 & 4 & 1 & 1 & 2 & 2 & 0 & 0 & 0 & 0 & 0 & 1 & 2 & 0 & 1 & 0 & 0 & 1 &
+0 & 0 & 1 & 0 & 1 & 1 & 1 & 2 & 0\tabularnewline
+En el archivo counts & , debemos modificar los nom & bres de las
+columnas dado q & ue utilizan puntos en los n & ombres de muestra (por
+ejem & plo GTEX.111CU.0226.SM.5GZX & C), y en el archivo targets & se
+emplean líneas (GTEX-1 & 11CU-0226-SM-5GZXC) con la & funcion gsub & & &
+& & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & &
+& & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & &
+& & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & &
+& & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & &
+& & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & &
+& & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & &
+& & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & & &
+& & & & & & & & & & & & & & & & & & & & & & & & & & & &\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\OperatorTok{>}\StringTok{ }\KeywordTok{colnames}\NormalTok{(counts)<-}\KeywordTok{gsub}\NormalTok{(}\StringTok{"[.]"}\NormalTok{,}\StringTok{"-"}\NormalTok{,}\KeywordTok{colnames}\NormalTok{(counts))}
+\end{Highlighting}
+\end{Shaded}
+
+Mediante la función sample seleccionaremos aletaoriamente 10 muestras de
+cada grupo, en nuestro caso sin reemplazamiento:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\OperatorTok{>}\StringTok{ }\KeywordTok{set.seed}\NormalTok{(}\DecValTok{1456}\NormalTok{)}
+\OperatorTok{>}\StringTok{ }\NormalTok{targets_NIT<-}\StringTok{ }\KeywordTok{subset}\NormalTok{(targets, targets}\OperatorTok{$}\NormalTok{Group }\OperatorTok{==}\StringTok{ "NIT"}\NormalTok{)}
+\OperatorTok{>}\StringTok{ }\NormalTok{targets_SFI<-}\StringTok{ }\KeywordTok{subset}\NormalTok{(targets, targets}\OperatorTok{$}\NormalTok{Group }\OperatorTok{==}\StringTok{ "SFI"}\NormalTok{)}
+\OperatorTok{>}\StringTok{ }\NormalTok{targets_ELI<-}\StringTok{ }\KeywordTok{subset}\NormalTok{(targets, targets}\OperatorTok{$}\NormalTok{Group }\OperatorTok{==}\StringTok{ "ELI"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\OperatorTok{>}\StringTok{ }\NormalTok{NIT_}\DecValTok{10}\NormalTok{<-targets_NIT[}\KeywordTok{sample}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\KeywordTok{nrow}\NormalTok{(targets_NIT),}\DecValTok{10}\NormalTok{),]}
+\OperatorTok{>}\StringTok{ }\NormalTok{SFI_}\DecValTok{10}\NormalTok{<-targets_SFI[}\KeywordTok{sample}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\KeywordTok{nrow}\NormalTok{(targets_SFI),}\DecValTok{10}\NormalTok{),]}
+\OperatorTok{>}\StringTok{ }\NormalTok{ELI_}\DecValTok{10}\NormalTok{<-targets_ELI[}\KeywordTok{sample}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\KeywordTok{nrow}\NormalTok{(targets_ELI),}\DecValTok{10}\NormalTok{),]}
+\OperatorTok{>}\StringTok{ }\NormalTok{targets_muestras<-}\KeywordTok{rbind}\NormalTok{(NIT_}\DecValTok{10}\NormalTok{,SFI_}\DecValTok{10}\NormalTok{,ELI_}\DecValTok{10}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\OperatorTok{>}\StringTok{ }\NormalTok{counts_muestras<-counts[,targets_muestras}\OperatorTok{$}\NormalTok{Sample_Name]}
+\OperatorTok{>}\StringTok{ }\NormalTok{nombres_columnas <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\KeywordTok{paste}\NormalTok{(}\StringTok{"NIT"}\NormalTok{, }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{10}\NormalTok{), }\DataTypeTok{sep =} \StringTok{"_"}\NormalTok{), }\KeywordTok{paste}\NormalTok{(}\StringTok{"SFI"}\NormalTok{, }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{10}\NormalTok{), }\DataTypeTok{sep =} \StringTok{"_"}\NormalTok{), }\KeywordTok{paste}\NormalTok{(}\StringTok{"ELI"}\NormalTok{, }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{10}\NormalTok{), }\DataTypeTok{sep =} \StringTok{"_"}\NormalTok{))}
+\OperatorTok{>}\StringTok{ }\KeywordTok{colnames}\NormalTok{(counts_muestras) <-}\StringTok{ }\NormalTok{nombres_columnas}
+\OperatorTok{>}\StringTok{ }\NormalTok{coldata_muestras<-targets_muestras[,}\KeywordTok{c}\NormalTok{(}\StringTok{"Group"}\NormalTok{,}\StringTok{"Sample_Name"}\NormalTok{)]}
+\OperatorTok{>}\StringTok{ }\KeywordTok{head}\NormalTok{(coldata_muestras)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+& Group & Sample\_Name\tabularnewline
+\midrule
+\endhead
+273 & NIT & GTEX-ZTSS-0226-SM-59877\tabularnewline
+118 & NIT & GTEX-13QBU-0626-SM-5J2OG\tabularnewline
+108 & NIT & GTEX-13OVG-0226-SM-5LU93\tabularnewline
+254 & NIT & GTEX-Z9EW-0226-SM-5CVM7\tabularnewline
+239 & NIT & GTEX-Y114-0626-SM-4TT98\tabularnewline
+91 & NIT & GTEX-13G51-1226-SM-5K7Z3\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{materiales-y-muxe9todos}{%
+\subsection{3.Materiales y métodos}\label{materiales-y-muxe9todos}}
+
+\hypertarget{creaciuxf3n-del-objeto-deseqdataset}{%
+\subsection{3.1. Creación del objeto
+DESeqDataSet}\label{creaciuxf3n-del-objeto-deseqdataset}}
+
+Construiremos el objeto DESeqDataSet a partir de los datos generados
+counts\_muestras y coldata\_muestras.
+
+\hypertarget{filtrado-de-los-datos}{%
+\subsection{3.2.Filtrado de los datos}\label{filtrado-de-los-datos}}
+
+El filtradose lo realizamos para descartar los counts bajos y optimizar
+el tiempo de computación y el efecto del ruido, tendremos en cuenta los
+genes con una expresión superior o igual a 10.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\OperatorTok{>}\StringTok{ }\NormalTok{dds<-dds[}\KeywordTok{rowSums}\NormalTok{(}\KeywordTok{counts}\NormalTok{(dds))}\OperatorTok{>=}\DecValTok{5}\NormalTok{,]}
+\OperatorTok{>}\StringTok{ }\KeywordTok{nrow}\NormalTok{(dds)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+[1] 39443
+\end{verbatim}
+
+De 56202 gracias al prefiltrado obtenemos 39443 genes
+
+\hypertarget{estabilizaciuxf3n-de-la-varianza}{%
+\subsection{3.3.Estabilización de la
+varianza}\label{estabilizaciuxf3n-de-la-varianza}}
+
+Efectuaremos un proceso de normalización con el método VST (variancde
+stabilizaing transformation) generando el objeto ``vsd''
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\OperatorTok{>}\StringTok{ }\NormalTok{vsd<-}\KeywordTok{vst}\NormalTok{(dds,}\DataTypeTok{blind=}\OtherTok{FALSE}\NormalTok{)}
+\OperatorTok{>}\StringTok{ }\KeywordTok{head}\NormalTok{(}\KeywordTok{assay}\NormalTok{(vsd),}\DecValTok{3}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}lrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr@{}}
+\toprule
+& NIT\_1 & NIT\_2 & NIT\_3 & NIT\_4 & NIT\_5 & NIT\_6 & NIT\_7 & NIT\_8
+& NIT\_9 & NIT\_10 & SFI\_1 & SFI\_2 & SFI\_3 & SFI\_4 & SFI\_5 & SFI\_6
+& SFI\_7 & SFI\_8 & SFI\_9 & SFI\_10 & ELI\_1 & ELI\_2 & ELI\_3 & ELI\_4
+& ELI\_5 & ELI\_6 & ELI\_7 & ELI\_8 & ELI\_9 & ELI\_10\tabularnewline
+\midrule
+\endhead
+ENSG00000223972.4 & 4.170073 & 4.539828 & 4.286196 & 4.195691 & 4.105029
+& 3.322989 & 5.263607 & 3.993651 & 3.322989 & 4.032690 & 3.781557 &
+4.306126 & 3.965362 & 4.227092 & 4.842906 & 3.947565 & 4.318904 &
+3.322989 & 3.322989 & 4.092266 & 4.482776 & 4.057400 & 3.974244 &
+3.322989 & 4.029245 & 3.322989 & 4.713770 & 4.083775 & 3.675591 &
+3.322989\tabularnewline
+ENSG00000227232.4 & 9.555407 & 9.588038 & 9.734627 & 9.194952 & 9.473535
+& 10.231476 & 9.030215 & 8.886862 & 9.931201 & 9.903944 & 10.109551 &
+9.063448 & 9.481267 & 9.166834 & 8.742371 & 10.105921 & 9.639467 &
+9.227447 & 9.534737 & 8.865806 & 10.180591 & 9.809989 & 9.444452 &
+8.905125 & 9.069501 & 9.853578 & 8.871565 & 10.293480 & 9.820539 &
+9.947004\tabularnewline
+ENSG00000243485.2 & 3.322989 & 3.322989 & 4.010282 & 4.039087 & 4.222468
+& 3.849276 & 4.399507 & 3.322989 & 3.322989 & 3.615153 & 3.968830 &
+4.130747 & 3.965362 & 3.322989 & 4.361232 & 3.685456 & 3.322989 &
+3.796425 & 3.322989 & 3.322989 & 3.807049 & 3.693156 & 3.974244 &
+3.322989 & 3.322989 & 3.798555 & 4.146199 & 3.765598 & 3.675591 &
+3.811759\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\OperatorTok{>}\StringTok{ }\NormalTok{vsd}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+class: DESeqTransform 
+dim: 39443 30 
+metadata(1): version
+assays(1): ''
+rownames(39443): ENSG00000223972.4 ENSG00000227232.4 ...
+  ENSG00000210195.2 ENSG00000210196.2
+rowData names(5): genes baseMean baseVar allZero dispFit
+colnames(30): NIT_1 NIT_2 ... ELI_9 ELI_10
+colData names(3): Group Sample_Name sizeFactor
+\end{verbatim}
+
+\hypertarget{heatmap}{%
+\subsection{3.4.Heatmap}\label{heatmap}}
+
+Con el objeto vsd genearmos un heatmap para visualizar las distancias
+entre las muestras, a mayor tonalidad mayor proximidad.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\OperatorTok{>}\StringTok{ }\NormalTok{sampleDists<-}\KeywordTok{dist}\NormalTok{(}\KeywordTok{t}\NormalTok{(}\KeywordTok{assay}\NormalTok{(vsd)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\OperatorTok{>}\StringTok{ }\KeywordTok{library}\NormalTok{(}\StringTok{"pheatmap"}\NormalTok{)}
+\OperatorTok{>}\StringTok{ }\KeywordTok{library}\NormalTok{(}\StringTok{"RColorBrewer"}\NormalTok{)}
+\OperatorTok{>}\StringTok{ }\NormalTok{sampleDistMatrix <-}\StringTok{ }\KeywordTok{as.matrix}\NormalTok{( sampleDists )}
+\OperatorTok{>}\StringTok{ }\KeywordTok{rownames}\NormalTok{(sampleDistMatrix) <-}\StringTok{ }\KeywordTok{paste}\NormalTok{( vsd}\OperatorTok{$}\NormalTok{dex, vsd}\OperatorTok{$}\NormalTok{cell, }\DataTypeTok{sep =} \StringTok{" - "}\NormalTok{ )}
+\OperatorTok{>}\StringTok{ }\KeywordTok{colnames}\NormalTok{(sampleDistMatrix) <-}\StringTok{ }\OtherTok{NULL}
+\OperatorTok{>}\StringTok{ }\NormalTok{colors <-}\StringTok{ }\KeywordTok{colorRampPalette}\NormalTok{( }\KeywordTok{rev}\NormalTok{(}\KeywordTok{brewer.pal}\NormalTok{(}\DecValTok{9}\NormalTok{, }\StringTok{"Blues"}\NormalTok{)) )(}\DecValTok{255}\NormalTok{)}
+\OperatorTok{>}\StringTok{ }\KeywordTok{pheatmap}\NormalTok{(sampleDistMatrix,}
+\OperatorTok{+}\StringTok{          }\DataTypeTok{clustering_distance_rows =}\NormalTok{ sampleDists,}
+\OperatorTok{+}\StringTok{          }\DataTypeTok{clustering_distance_cols =}\NormalTok{ sampleDists,}
+\OperatorTok{+}\StringTok{          }\DataTypeTok{col =}\NormalTok{ colors)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+
+{\centering \includegraphics{PAC2ADO_files/figure-latex/unnamed-chunk-7-1} 
+
+}
+
+\caption{Heatmap de la agupación entre muestras}\label{fig:unnamed-chunk-7}
+\end{figure}
+
+\hypertarget{anuxe1lisis-de-componentes-principales-pca}{%
+\subsection{3.5. Análisis de componentes principales
+(PCA)}\label{anuxe1lisis-de-componentes-principales-pca}}
+
+Gracias al gráfico PCA observamos la distribución de los tres grupos.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\OperatorTok{>}\StringTok{ }\KeywordTok{library}\NormalTok{(DESeq2)}
+\OperatorTok{>}\StringTok{ }\KeywordTok{plotPCA}\NormalTok{(vsd, }\DataTypeTok{intgroup =} \KeywordTok{c}\NormalTok{(}\StringTok{"Group"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}
+
+{\centering \includegraphics{PAC2ADO_files/figure-latex/unnamed-chunk-8-1} 
+
+}
+
+\caption{Análisis de componentes principales}\label{fig:unnamed-chunk-8}
+\end{figure}
+
+En la figura vemos que el primer componente (PC1)representa el 70\% de
+la variabilidad total, mientras que el segundo componente (PC2) acumula
+el 6\% de los datos normalizados.
+
+\hypertarget{anuxe1lisis-de-expresiuxf3n-diferencial}{%
+\subsection{3.6.Análisis de expresión
+diferencial}\label{anuxe1lisis-de-expresiuxf3n-diferencial}}
+
+Para realizar el análisis de expresión deiferencial emplearemos la
+función DeSeq() de la libreria DESeq2 con los datos filtrados. El
+análisis de expresión génica se llevará a cabo basandonos en la
+distribución bionmial negativa
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\OperatorTok{>}\StringTok{ }\KeywordTok{library}\NormalTok{(DESeq2)}
+\OperatorTok{>}\StringTok{ }\NormalTok{dds <-}\StringTok{ }\KeywordTok{DESeq}\NormalTok{(dds, }\DataTypeTok{parallel =}\OtherTok{TRUE}\NormalTok{)}
+\OperatorTok{>}\StringTok{ }\NormalTok{res <-}\StringTok{ }\KeywordTok{results}\NormalTok{(dds)}
+\OperatorTok{>}\StringTok{ }\KeywordTok{summary}\NormalTok{(res)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+
+out of 39438 with nonzero total read count
+adjusted p-value < 0.1
+LFC > 0 (up)       : 2375, 6%
+LFC < 0 (down)     : 3097, 7.9%
+outliers [1]       : 0, 0%
+low counts [2]     : 9945, 25%
+(mean count < 1)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+\end{verbatim}
+
+\hypertarget{plot-ma-de-comparaciuxf3n-sfi-vs-nit}{%
+\subsection{3.7.Plot MA de comparación SFI vs
+NIT}\label{plot-ma-de-comparaciuxf3n-sfi-vs-nit}}
+
+Obtenemos la tabla de resultados de la comparación SFI vs NIT
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\OperatorTok{>}\StringTok{ }\NormalTok{sfi_nit<-}\KeywordTok{results}\NormalTok{(dds,}\DataTypeTok{contrast=}\KeywordTok{c}\NormalTok{(}\StringTok{"Group"}\NormalTok{,}\StringTok{"SFI"}\NormalTok{,}\StringTok{"NIT"}\NormalTok{),}\DataTypeTok{alpha=}\FloatTok{0.05}\NormalTok{)}
+\OperatorTok{>}\StringTok{ }\KeywordTok{summary}\NormalTok{(sfi_nit)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+
+out of 39438 with nonzero total read count
+adjusted p-value < 0.05
+LFC > 0 (up)       : 375, 0.95%
+LFC < 0 (down)     : 71, 0.18%
+outliers [1]       : 0, 0%
+low counts [2]     : 14533, 37%
+(mean count < 5)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\OperatorTok{>}\StringTok{ }\KeywordTok{table}\NormalTok{(sfi_nit}\OperatorTok{$}\NormalTok{adj}\OperatorTok{<}\FloatTok{0.05}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+Empty table
+\end{verbatim}
+
+\begin{figure}
+
+{\centering \includegraphics{PAC2ADO_files/figure-latex/unnamed-chunk-11-1} 
+
+}
+
+\caption{Comparación SFI vs NIT}\label{fig:unnamed-chunk-11}
+\end{figure}
+
+\hypertarget{plot-ma-de-omparaciuxf3n-eli-vs-nit}{%
+\subsection{3.8. Plot MA de omparación ELI vs
+NIT}\label{plot-ma-de-omparaciuxf3n-eli-vs-nit}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\OperatorTok{>}\StringTok{ }\NormalTok{eli_nit<-}\KeywordTok{results}\NormalTok{(dds,}\DataTypeTok{contrast=}\KeywordTok{c}\NormalTok{(}\StringTok{"Group"}\NormalTok{,}\StringTok{"ELI"}\NormalTok{,}\StringTok{"NIT"}\NormalTok{),}\DataTypeTok{alpha=}\FloatTok{0.05}\NormalTok{)}
+\OperatorTok{>}\StringTok{ }\KeywordTok{summary}\NormalTok{(eli_nit)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+
+out of 39438 with nonzero total read count
+adjusted p-value < 0.05
+LFC > 0 (up)       : 4271, 11%
+LFC < 0 (down)     : 2411, 6.1%
+outliers [1]       : 0, 0%
+low counts [2]     : 8416, 21%
+(mean count < 1)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\OperatorTok{>}\StringTok{ }\KeywordTok{table}\NormalTok{(eli_nit}\OperatorTok{$}\NormalTok{adj}\OperatorTok{<}\FloatTok{0.05}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+Empty table
+\end{verbatim}
+
+\begin{figure}
+
+{\centering \includegraphics{PAC2ADO_files/figure-latex/unnamed-chunk-13-1} 
+
+}
+
+\caption{Comparación ELI vs NIT}\label{fig:unnamed-chunk-13}
+\end{figure}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\OperatorTok{>}\StringTok{ }\NormalTok{eli_sfi<-}\KeywordTok{results}\NormalTok{(dds,}\DataTypeTok{contrast=}\KeywordTok{c}\NormalTok{(}\StringTok{"Group"}\NormalTok{,}\StringTok{"ELI"}\NormalTok{,}\StringTok{"SFI"}\NormalTok{),}\DataTypeTok{alpha=}\FloatTok{0.05}\NormalTok{)}
+\OperatorTok{>}\StringTok{ }\KeywordTok{summary}\NormalTok{(eli_sfi)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+
+out of 39438 with nonzero total read count
+adjusted p-value < 0.05
+LFC > 0 (up)       : 2373, 6%
+LFC < 0 (down)     : 1615, 4.1%
+outliers [1]       : 0, 0%
+low counts [2]     : 10710, 27%
+(mean count < 2)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\OperatorTok{>}\StringTok{ }\KeywordTok{table}\NormalTok{(eli_sfi}\OperatorTok{$}\NormalTok{adj}\OperatorTok{<}\FloatTok{0.05}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+Empty table
+\end{verbatim}
+
+\hypertarget{plot-ma-de-comparaciuxf3n-eli-vs-sfi}{%
+\subsection{3.9 Plot MA de comparación ELI vs
+SFI}\label{plot-ma-de-comparaciuxf3n-eli-vs-sfi}}
+
+\begin{figure}
+
+{\centering \includegraphics{PAC2ADO_files/figure-latex/unnamed-chunk-15-1} 
+
+}
+
+\caption{Comparación ELI vs SFI}\label{fig:unnamed-chunk-15}
+\end{figure}
+
+En los tres gráficos observamos diferencias entre las comparaciones,
+siendo las dos últimas donde existe una mayor sobreexpresión génica.
+
+\hypertarget{diagrama-de-venn}{%
+\subsection{3.10. Diagrama de Venn}\label{diagrama-de-venn}}
+
+\begin{figure}
+
+{\centering \includegraphics{PAC2ADO_files/figure-latex/unnamed-chunk-16-1} 
+
+}
+
+\caption{Diagrama de Venn de las tres comparaciones}\label{fig:unnamed-chunk-16}
+\end{figure}
+
+El Diagrama de Venn nos permite de una manera muy visual ver el número
+de genes en común que hay entre las tres comparaciones.
+
+\hypertarget{heatmap-de-los-10-genes-muxe1s-significativos}{%
+\subsection{3.11 Heatmap de los 10 genes más
+significativos}\label{heatmap-de-los-10-genes-muxe1s-significativos}}
+
+\begin{figure}
+
+{\centering \includegraphics{PAC2ADO_files/figure-latex/unnamed-chunk-17-1} 
+
+}
+
+\caption{Heatmap con los 10 genes más significativos}\label{fig:unnamed-chunk-17}
+\end{figure}
+
+El heatmap nos permite ver las diferencias a nivel de expresión de los
+10 genes más significativos de los tres grupos.
+
+\hypertarget{anotaciuxf3n-de-los-genes}{%
+\subsection{3.12.Anotación de los
+genes}\label{anotaciuxf3n-de-los-genes}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\OperatorTok{>}\StringTok{ }\KeywordTok{library}\NormalTok{(}\StringTok{"AnnotationDbi"}\NormalTok{)}
+\OperatorTok{>}\StringTok{ }\KeywordTok{library}\NormalTok{(}\StringTok{"org.Hs.eg.db"}\NormalTok{)}
+\OperatorTok{>}\StringTok{ }\KeywordTok{columns}\NormalTok{(org.Hs.eg.db)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+ [1] "ACCNUM"       "ALIAS"        "ENSEMBL"      "ENSEMBLPROT"  "ENSEMBLTRANS"
+ [6] "ENTREZID"     "ENZYME"       "EVIDENCE"     "EVIDENCEALL"  "GENENAME"    
+[11] "GO"           "GOALL"        "IPI"          "MAP"          "OMIM"        
+[16] "ONTOLOGY"     "ONTOLOGYALL"  "PATH"         "PFAM"         "PMID"        
+[21] "PROSITE"      "REFSEQ"       "SYMBOL"       "UCSCKG"       "UNIGENE"     
+[26] "UNIPROT"     
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\OperatorTok{>}\StringTok{ }\NormalTok{sfi_nit}\OperatorTok{$}\NormalTok{symbol <-}\StringTok{ }\KeywordTok{mapIds}\NormalTok{(org.Hs.eg.db,}
+\OperatorTok{+}\StringTok{                      }\DataTypeTok{keys=}\KeywordTok{gsub}\NormalTok{(}\StringTok{"}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{..*"}\NormalTok{, }\StringTok{""}\NormalTok{, }\KeywordTok{row.names}\NormalTok{(sfi_nit), }\DataTypeTok{fixed =} \OtherTok{FALSE}\NormalTok{), }
+\OperatorTok{+}\StringTok{                      }\DataTypeTok{column=}\StringTok{"SYMBOL"}\NormalTok{,}
+\OperatorTok{+}\StringTok{                      }\DataTypeTok{keytype=}\StringTok{"ENSEMBL"}\NormalTok{,}
+\OperatorTok{+}\StringTok{                      }\DataTypeTok{multiVals=}\StringTok{"first"}\NormalTok{)}
+\OperatorTok{>}\StringTok{ }\NormalTok{sfi_nit}\OperatorTok{$}\NormalTok{entrez <-}\StringTok{ }\KeywordTok{mapIds}\NormalTok{(org.Hs.eg.db,}
+\OperatorTok{+}\StringTok{                      }\DataTypeTok{keys=}\KeywordTok{gsub}\NormalTok{(}\StringTok{"}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{..*"}\NormalTok{, }\StringTok{""}\NormalTok{, }\KeywordTok{row.names}\NormalTok{(sfi_nit), }\DataTypeTok{fixed =} \OtherTok{FALSE}\NormalTok{),}
+\OperatorTok{+}\StringTok{                      }\DataTypeTok{column=}\StringTok{"ENTREZID"}\NormalTok{,}
+\OperatorTok{+}\StringTok{                      }\DataTypeTok{keytype=}\StringTok{"ENSEMBL"}\NormalTok{,}
+\OperatorTok{+}\StringTok{                      }\DataTypeTok{multiVals=}\StringTok{"first"}\NormalTok{)}
+\OperatorTok{>}\StringTok{ }\NormalTok{resOrdered1 <-}\StringTok{ }\NormalTok{sfi_nit[}\KeywordTok{order}\NormalTok{(sfi_nit}\OperatorTok{$}\NormalTok{pvalue),]}
+\OperatorTok{>}\StringTok{ }\KeywordTok{head}\NormalTok{(resOrdered1)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+log2 fold change (MLE): Group SFI vs NIT 
+Wald test p-value: Group SFI vs NIT 
+DataFrame with 6 rows and 8 columns
+                           baseMean   log2FoldChange             lfcSE
+                          <numeric>        <numeric>         <numeric>
+ENSG00000211892.2  13492.4172432439 6.07362956218868 0.968748372269586
+ENSG00000172724.7  3719.51961557336 3.62230886704793 0.660502537698542
+ENSG00000260997.1  184.416184325258 2.86548472807048 0.526025005761084
+ENSG00000159958.3  246.757022074058 4.78458849861988 0.888062802466163
+ENSG00000136286.10 1702.74944724437 2.32995837029841  0.43741940954848
+ENSG00000269404.2  479.721611955277 3.93406065863648 0.747975343019807
+                               stat               pvalue                 padj
+                          <numeric>            <numeric>            <numeric>
+ENSG00000211892.2  6.26956363081092 3.62061318140653e-10 9.01894743488367e-06
+ENSG00000172724.7  5.48417100662402 4.15412786374104e-08 0.000424322218846931
+ENSG00000260997.1   5.4474306291286 5.11026357503329e-08 0.000424322218846931
+ENSG00000159958.3  5.38766907625565 7.13773185228306e-08 0.000444502251100928
+ENSG00000136286.10 5.32660032782604 1.00068017826303e-07 0.000498538864810644
+ENSG00000269404.2  5.25961276043333 1.44359083688796e-07 0.000599330795781319
+                        symbol      entrez
+                   <character> <character>
+ENSG00000211892.2           NA          NA
+ENSG00000172724.7        CCL19        6363
+ENSG00000260997.1           NA          NA
+ENSG00000159958.3    TNFRSF13C      115650
+ENSG00000136286.10       MYO1G       64005
+ENSG00000269404.2         SPIB        6689
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\OperatorTok{>}\StringTok{ }\NormalTok{resOrderedDF <-}\StringTok{ }\KeywordTok{as.data.frame}\NormalTok{(resOrdered1)}
+\OperatorTok{>}\StringTok{ }\KeywordTok{write.csv}\NormalTok{(resOrderedDF, }\DataTypeTok{file =} \StringTok{"results1.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\OperatorTok{>}\StringTok{ }\KeywordTok{library}\NormalTok{(}\StringTok{"AnnotationDbi"}\NormalTok{)}
+\OperatorTok{>}\StringTok{ }\KeywordTok{library}\NormalTok{(}\StringTok{"org.Hs.eg.db"}\NormalTok{)}
+\OperatorTok{>}\StringTok{ }\KeywordTok{columns}\NormalTok{(org.Hs.eg.db)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+ [1] "ACCNUM"       "ALIAS"        "ENSEMBL"      "ENSEMBLPROT"  "ENSEMBLTRANS"
+ [6] "ENTREZID"     "ENZYME"       "EVIDENCE"     "EVIDENCEALL"  "GENENAME"    
+[11] "GO"           "GOALL"        "IPI"          "MAP"          "OMIM"        
+[16] "ONTOLOGY"     "ONTOLOGYALL"  "PATH"         "PFAM"         "PMID"        
+[21] "PROSITE"      "REFSEQ"       "SYMBOL"       "UCSCKG"       "UNIGENE"     
+[26] "UNIPROT"     
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\OperatorTok{>}\StringTok{ }\NormalTok{eli_nit}\OperatorTok{$}\NormalTok{symbol <-}\StringTok{ }\KeywordTok{mapIds}\NormalTok{(org.Hs.eg.db,}
+\OperatorTok{+}\StringTok{                      }\DataTypeTok{keys=}\KeywordTok{gsub}\NormalTok{(}\StringTok{"}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{..*"}\NormalTok{, }\StringTok{""}\NormalTok{, }\KeywordTok{row.names}\NormalTok{(sfi_nit), }\DataTypeTok{fixed =} \OtherTok{FALSE}\NormalTok{), }
+\OperatorTok{+}\StringTok{                      }\DataTypeTok{column=}\StringTok{"SYMBOL"}\NormalTok{,}
+\OperatorTok{+}\StringTok{                      }\DataTypeTok{keytype=}\StringTok{"ENSEMBL"}\NormalTok{,}
+\OperatorTok{+}\StringTok{                      }\DataTypeTok{multiVals=}\StringTok{"first"}\NormalTok{)}
+\OperatorTok{>}\StringTok{ }\NormalTok{eli_nit}\OperatorTok{$}\NormalTok{entrez <-}\StringTok{ }\KeywordTok{mapIds}\NormalTok{(org.Hs.eg.db,}
+\OperatorTok{+}\StringTok{                      }\DataTypeTok{keys=}\KeywordTok{gsub}\NormalTok{(}\StringTok{"}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{..*"}\NormalTok{, }\StringTok{""}\NormalTok{, }\KeywordTok{row.names}\NormalTok{(sfi_nit), }\DataTypeTok{fixed =} \OtherTok{FALSE}\NormalTok{),}
+\OperatorTok{+}\StringTok{                      }\DataTypeTok{column=}\StringTok{"ENTREZID"}\NormalTok{,}
+\OperatorTok{+}\StringTok{                      }\DataTypeTok{keytype=}\StringTok{"ENSEMBL"}\NormalTok{,}
+\OperatorTok{+}\StringTok{                      }\DataTypeTok{multiVals=}\StringTok{"first"}\NormalTok{)}
+\OperatorTok{>}\StringTok{ }\NormalTok{resOrdered2 <-}\StringTok{ }\NormalTok{eli_nit[}\KeywordTok{order}\NormalTok{(eli_nit}\OperatorTok{$}\NormalTok{pvalue),]}
+\OperatorTok{>}\StringTok{ }\KeywordTok{head}\NormalTok{(resOrdered2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+log2 fold change (MLE): Group ELI vs NIT 
+Wald test p-value: Group ELI vs NIT 
+DataFrame with 6 rows and 8 columns
+                           baseMean    log2FoldChange             lfcSE
+                          <numeric>         <numeric>         <numeric>
+ENSG00000262222.1  184.422737861042   2.7511097591949 0.273213131856316
+ENSG00000104921.10 405.807330008998  6.43550005006524 0.664359071143536
+ENSG00000167483.13 1016.63079282833  7.05313690130025 0.768618871960019
+ENSG00000112763.11 3145.06226024024 0.944831745419756 0.103874586459125
+ENSG00000072818.7  3093.36286537535  3.78700962883201 0.418212018355202
+ENSG00000233355.2   380.21804207831  5.22810933551214 0.578420130072726
+                               stat               pvalue                 padj
+                          <numeric>            <numeric>            <numeric>
+ENSG00000262222.1  10.0694638669188 7.53879030167126e-24 2.33906046689954e-19
+ENSG00000104921.10  9.6867798297509 3.43178248793211e-22 5.32389576265347e-18
+ENSG00000167483.13 9.17637747212006 4.45837384285064e-20 4.61099884073756e-16
+ENSG00000112763.11 9.09588935684041 9.38154732636207e-20  7.2770317223759e-16
+ENSG00000072818.7  9.05523864121851  1.3626948428393e-19 8.20603279631975e-16
+ENSG00000233355.2  9.03860198443439 1.58688228890703e-19 8.20603279631975e-16
+                        symbol      entrez
+                   <character> <character>
+ENSG00000262222.1           NA          NA
+ENSG00000104921.10       FCER2        2208
+ENSG00000167483.13      NIBAN3      199786
+ENSG00000112763.11      BTN2A1       11120
+ENSG00000072818.7        ACAP1        9744
+ENSG00000233355.2    CHRM3-AS2   100506915
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\OperatorTok{>}\StringTok{ }\NormalTok{resOrderedDF2 <-}\StringTok{ }\KeywordTok{as.data.frame}\NormalTok{(resOrdered2)}
+\OperatorTok{>}\StringTok{ }\KeywordTok{write.csv}\NormalTok{(resOrderedDF, }\DataTypeTok{file =} \StringTok{"results2.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\OperatorTok{>}\StringTok{ }\KeywordTok{library}\NormalTok{(}\StringTok{"AnnotationDbi"}\NormalTok{)}
+\OperatorTok{>}\StringTok{ }\KeywordTok{library}\NormalTok{(}\StringTok{"org.Hs.eg.db"}\NormalTok{)}
+\OperatorTok{>}\StringTok{ }\KeywordTok{columns}\NormalTok{(org.Hs.eg.db)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+ [1] "ACCNUM"       "ALIAS"        "ENSEMBL"      "ENSEMBLPROT"  "ENSEMBLTRANS"
+ [6] "ENTREZID"     "ENZYME"       "EVIDENCE"     "EVIDENCEALL"  "GENENAME"    
+[11] "GO"           "GOALL"        "IPI"          "MAP"          "OMIM"        
+[16] "ONTOLOGY"     "ONTOLOGYALL"  "PATH"         "PFAM"         "PMID"        
+[21] "PROSITE"      "REFSEQ"       "SYMBOL"       "UCSCKG"       "UNIGENE"     
+[26] "UNIPROT"     
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\OperatorTok{>}\StringTok{ }\NormalTok{eli_sfi}\OperatorTok{$}\NormalTok{symbol <-}\StringTok{ }\KeywordTok{mapIds}\NormalTok{(org.Hs.eg.db,}
+\OperatorTok{+}\StringTok{                      }\DataTypeTok{keys=}\KeywordTok{gsub}\NormalTok{(}\StringTok{"}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{..*"}\NormalTok{, }\StringTok{""}\NormalTok{, }\KeywordTok{row.names}\NormalTok{(sfi_nit), }\DataTypeTok{fixed =} \OtherTok{FALSE}\NormalTok{), }
+\OperatorTok{+}\StringTok{                      }\DataTypeTok{column=}\StringTok{"SYMBOL"}\NormalTok{,}
+\OperatorTok{+}\StringTok{                      }\DataTypeTok{keytype=}\StringTok{"ENSEMBL"}\NormalTok{,}
+\OperatorTok{+}\StringTok{                      }\DataTypeTok{multiVals=}\StringTok{"first"}\NormalTok{)}
+\OperatorTok{>}\StringTok{ }\NormalTok{eli_sfi}\OperatorTok{$}\NormalTok{entrez <-}\StringTok{ }\KeywordTok{mapIds}\NormalTok{(org.Hs.eg.db,}
+\OperatorTok{+}\StringTok{                      }\DataTypeTok{keys=}\KeywordTok{gsub}\NormalTok{(}\StringTok{"}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{..*"}\NormalTok{, }\StringTok{""}\NormalTok{, }\KeywordTok{row.names}\NormalTok{(sfi_nit), }\DataTypeTok{fixed =} \OtherTok{FALSE}\NormalTok{),}
+\OperatorTok{+}\StringTok{                      }\DataTypeTok{column=}\StringTok{"ENTREZID"}\NormalTok{,}
+\OperatorTok{+}\StringTok{                      }\DataTypeTok{keytype=}\StringTok{"ENSEMBL"}\NormalTok{,}
+\OperatorTok{+}\StringTok{                      }\DataTypeTok{multiVals=}\StringTok{"first"}\NormalTok{)}
+\OperatorTok{>}\StringTok{ }\NormalTok{resOrdered3 <-}\StringTok{ }\NormalTok{eli_sfi[}\KeywordTok{order}\NormalTok{(eli_sfi}\OperatorTok{$}\NormalTok{pvalue),]}
+\OperatorTok{>}\StringTok{ }\KeywordTok{head}\NormalTok{(resOrdered3)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+log2 fold change (MLE): Group ELI vs SFI 
+Wald test p-value: Group ELI vs SFI 
+DataFrame with 6 rows and 8 columns
+                           baseMean     log2FoldChange             lfcSE
+                          <numeric>          <numeric>         <numeric>
+ENSG00000262222.1  184.422737861042   1.98045214517335 0.270062285445374
+ENSG00000168615.7   4006.5753536885 -0.732575581894148 0.105064248392268
+ENSG00000162897.10 72.1494679582417   8.91932318299044  1.31626493299953
+ENSG00000211979.2  17.7329282834744   7.13866465737796  1.07905685303743
+ENSG00000154165.3  101.242768338442   4.54876530114955 0.702495357725913
+ENSG00000176105.9  2365.18459210896 -0.766680718940675 0.118493377511733
+                                stat               pvalue                 padj
+                           <numeric>            <numeric>            <numeric>
+ENSG00000262222.1   7.33331624557383 2.24526264326694e-13 6.45131315289889e-09
+ENSG00000168615.7   -6.9726438165626 3.11039420963221e-12 4.46854784126811e-08
+ENSG00000162897.10  6.77623703205778 1.23346254186967e-11 1.18136930718471e-07
+ENSG00000211979.2   6.61565202730827 3.69917595993817e-11 2.65721057142258e-07
+ENSG00000154165.3   6.47515353820217 9.47155790056187e-11 4.68571443486195e-07
+ENSG00000176105.9  -6.47024108047522 9.78466801558199e-11 4.68571443486195e-07
+                        symbol      entrez
+                   <character> <character>
+ENSG00000262222.1           NA          NA
+ENSG00000168615.7        ADAM9        8754
+ENSG00000162897.10       FCAMR       83953
+ENSG00000211979.2           NA          NA
+ENSG00000154165.3        GPR15        2838
+ENSG00000176105.9         YES1        7525
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\OperatorTok{>}\StringTok{ }\NormalTok{resOrderedDF3 <-}\StringTok{ }\KeywordTok{as.data.frame}\NormalTok{(resOrdered3)}
+\OperatorTok{>}\StringTok{ }\KeywordTok{write.csv}\NormalTok{(resOrderedDF, }\DataTypeTok{file =} \StringTok{"results3.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{identificaciuxf3n-de-los-genes}{%
+\subsection{3.13. Identificación de los
+genes}\label{identificaciuxf3n-de-los-genes}}
+
+\begin{verbatim}
+log2 fold change (MLE): Group SFI vs NIT 
+Wald test p-value: Group SFI vs NIT 
+DataFrame with 5 rows and 8 columns
+                           baseMean   log2FoldChange             lfcSE
+                          <numeric>        <numeric>         <numeric>
+ENSG00000211892.2  13492.4172432439 6.07362956218868 0.968748372269586
+ENSG00000172724.7  3719.51961557336 3.62230886704793 0.660502537698542
+ENSG00000260997.1  184.416184325258 2.86548472807048 0.526025005761084
+ENSG00000159958.3  246.757022074058 4.78458849861988 0.888062802466163
+ENSG00000136286.10 1702.74944724437 2.32995837029841  0.43741940954848
+                               stat               pvalue                 padj
+                          <numeric>            <numeric>            <numeric>
+ENSG00000211892.2  6.26956363081092 3.62061318140653e-10 9.01894743488367e-06
+ENSG00000172724.7  5.48417100662402 4.15412786374104e-08 0.000424322218846931
+ENSG00000260997.1   5.4474306291286 5.11026357503329e-08 0.000424322218846931
+ENSG00000159958.3  5.38766907625565 7.13773185228306e-08 0.000444502251100928
+ENSG00000136286.10 5.32660032782604 1.00068017826303e-07 0.000498538864810644
+                        symbol      entrez
+                   <character> <character>
+ENSG00000211892.2           NA          NA
+ENSG00000172724.7        CCL19        6363
+ENSG00000260997.1           NA          NA
+ENSG00000159958.3    TNFRSF13C      115650
+ENSG00000136286.10       MYO1G       64005
+\end{verbatim}
+
+\begin{verbatim}
+log2 fold change (MLE): Group ELI vs NIT 
+Wald test p-value: Group ELI vs NIT 
+DataFrame with 5 rows and 8 columns
+                           baseMean    log2FoldChange             lfcSE
+                          <numeric>         <numeric>         <numeric>
+ENSG00000262222.1  184.422737861042   2.7511097591949 0.273213131856316
+ENSG00000104921.10 405.807330008998  6.43550005006524 0.664359071143536
+ENSG00000167483.13 1016.63079282833  7.05313690130025 0.768618871960019
+ENSG00000112763.11 3145.06226024024 0.944831745419756 0.103874586459125
+ENSG00000072818.7  3093.36286537535  3.78700962883201 0.418212018355202
+                               stat               pvalue                 padj
+                          <numeric>            <numeric>            <numeric>
+ENSG00000262222.1  10.0694638669188 7.53879030167126e-24 2.33906046689954e-19
+ENSG00000104921.10  9.6867798297509 3.43178248793211e-22 5.32389576265347e-18
+ENSG00000167483.13 9.17637747212006 4.45837384285064e-20 4.61099884073756e-16
+ENSG00000112763.11 9.09588935684041 9.38154732636207e-20  7.2770317223759e-16
+ENSG00000072818.7  9.05523864121851  1.3626948428393e-19 8.20603279631975e-16
+                        symbol      entrez
+                   <character> <character>
+ENSG00000262222.1           NA          NA
+ENSG00000104921.10       FCER2        2208
+ENSG00000167483.13      NIBAN3      199786
+ENSG00000112763.11      BTN2A1       11120
+ENSG00000072818.7        ACAP1        9744
+\end{verbatim}
+
+\begin{verbatim}
+log2 fold change (MLE): Group ELI vs SFI 
+Wald test p-value: Group ELI vs SFI 
+DataFrame with 5 rows and 8 columns
+                           baseMean     log2FoldChange             lfcSE
+                          <numeric>          <numeric>         <numeric>
+ENSG00000262222.1  184.422737861042   1.98045214517335 0.270062285445374
+ENSG00000168615.7   4006.5753536885 -0.732575581894148 0.105064248392268
+ENSG00000162897.10 72.1494679582417   8.91932318299044  1.31626493299953
+ENSG00000211979.2  17.7329282834744   7.13866465737796  1.07905685303743
+ENSG00000154165.3  101.242768338442   4.54876530114955 0.702495357725913
+                               stat               pvalue                 padj
+                          <numeric>            <numeric>            <numeric>
+ENSG00000262222.1  7.33331624557383 2.24526264326694e-13 6.45131315289889e-09
+ENSG00000168615.7  -6.9726438165626 3.11039420963221e-12 4.46854784126811e-08
+ENSG00000162897.10 6.77623703205778 1.23346254186967e-11 1.18136930718471e-07
+ENSG00000211979.2  6.61565202730827 3.69917595993817e-11 2.65721057142258e-07
+ENSG00000154165.3  6.47515353820217 9.47155790056187e-11 4.68571443486195e-07
+                        symbol      entrez
+                   <character> <character>
+ENSG00000262222.1           NA          NA
+ENSG00000168615.7        ADAM9        8754
+ENSG00000162897.10       FCAMR       83953
+ENSG00000211979.2           NA          NA
+ENSG00000154165.3        GPR15        2838
+\end{verbatim}
+
+\hypertarget{discusiuxf3n}{%
+\subsection{4.Discusión}\label{discusiuxf3n}}
+
+\hypertarget{apuxe9ndice}{%
+\subsection{5.Apéndice}\label{apuxe9ndice}}
+
+El siguiente informe, código y datos generados en este trabajo se pueden
+encontrar en el repositorio
+{[}\url{https://github.com/dcc1978/PEC2-RNAseq}{]}
+
+\hypertarget{bibliografia}{%
+\subsection{6.Bibliografia}\label{bibliografia}}
+
+\begin{itemize}
+\tightlist
+\item
+  Love MI, Anders S, Huber W (2020). ``Analyzing RNA-seq data with
+  DESeq2''.
+\end{itemize}
+
+\end{document}

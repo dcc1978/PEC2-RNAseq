@@ -1,0 +1,474 @@
+---
+title: "RNAseq Analysis PEC2"
+author: "David Cartoixà Cartoixà"
+date: "9/6/2020"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+---
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, 
+                      comment = NA, prompt = TRUE, tidy = FALSE, 
+                      fig.width = 7, fig.height = 7, fig_caption = FALSE,
+                      cache=FALSE)
+Sys.setlocale("LC_TIME", "C")
+```
+
+```{r echo=FALSE}
+if(!(require(printr))) {
+  install.packages(
+    'printr',
+    type = 'source',
+    repos = c('http://yihui.name/xran', 'http://cran.rstudio.com')
+  )
+}
+```
+**INDICE DE CONTENIDOS**
+
+1.[Abstract](#id1)
+2.[Objetivo del estudio y datos](#id2)
+2.1.[Objetivos del estudio](#id3)
+2.2.[Preparación del entorno de trabajo](#id4)
+2.3.[Selección de las muestras](#id5)
+3.[Materiales y métodos](#id6)
+3.1.[Creación del objeto DESeqDataSet](#id7)
+3.2.[Filtrado de los datos](#id8)
+3.3.[Estabilización de la varianza](#id9)
+3.4.[Heatmap](#id10)
+3.5.[Análisis de componentes principales](#id11)
+3.6.[Análisis de expresión diferencial](#id12)
+3.7.[Plot MA de comparación SFI vs NIT](#id13)
+3.8.[Plot MA de comparación ELI vs NIT](#id14)
+3.9.[Plot MA de comparación ELI vs SFI](#id15)
+3.10.[Diagrama de Venn](#id16)
+3.11.[Heatmap de los 10 genes más significativos](#id17)
+3.12.[Anotación de los genes](#id18)
+3.13.[Identificación de los genes](#id19)
+4.[Discusión](#id20)
+5.[Apéndice](#id21)
+6.[Bibliografia](#id22)
+
+
+```{r installPackages,include=FALSE}
+chooseCRANmirror(graphics=FALSE, ind=1)
+
+if (!(require(knitr))) install.packages("knitr")
+if (!(require(ggplot2))) install.packages("ggplot2")
+if (!(require(BiocManager))) install.packages("BiocManager")
+if (!(require(VennDiagram))) install.packages("VennDiagram")
+if (!(require(reshape))) install.packages("reshape")
+if (!(require(pheatmap))) install.packages("pheatmap")
+if (!(require(RColorBrewer))) install.packages("RColorBrewer")
+if (!(require(DESeq2))) BiocManager::install("DESeq2")
+if (!(require(grex))) BiocManager::install("grex")
+if (!(require(AnnotationDbi))) BiocManager::install("AnnotationDbi")
+if (!(require(org.Hs.eg.db))) BiocManager::install("org.Hs.eg.db")
+if (!(require(genefilter))) BiocManager::install("genefilter")
+if (!(require(clusterProfiler))) BiocManager::install("clusterProfiler")
+if (!(require(DOSE))) BiocManager::install("DOSE")
+if (!(require(enrichplot))) BiocManager::install("enrichplot")
+
+BiocManager::install("ReactomePA")
+BiocManager::install("Reactome.db")
+```
+
+
+<a name=id1></a>
+
+## 1.Abstract
+
+En el presente estudio estudiaremos los perfiles de expresión a partir de los datos de expresión (RNAseq) pertenecientes a un análisis del tiroides den donde se comparan tres tipos de infiltración medido en un total de 292 muestras pertenecientes a tres grupos:
+
+· Not infiltrated tissues (NIT): 236 muestras
+· Small focal infiltrates (SFI):42 muestras
+· Extensive lymphoid infiltrates (ELI): 14 muestras
+
+Extraeremos al azar 10 muestras de cada grupo para estudiar si existen diferencias significativas entre ellos en cuanto a perfiles de expresión. 
+
+
+<a name=id2></a>
+
+## 2.Objetivo del estudio y datos
+
+<a name=id3></a>
+
+## 2.1. Objetivos del estudio
+
+Efectuaremos un análisis de los datos RNA-Seq de los tres grupos mencionados para determinar cuáles son los genes diferencialmente expresados entre los tres grupos. 
+
+<a name=id4></a>
+
+## 2.2 Preparación del entorno de trabajo
+
+
+Primeramente definiremos el directorio de trabajo, y crearemos tres carpetas: "data" donde almacenaremos los archivos .CEL descomprimidos y los archivos generados por nosotros target; una carpeta "results" donde registraremos los resultados obtenidos y finalmente la carpeta "figures" en la cual almacenaremos las figuras del estudio. 
+
+```{r CreateFolders,warning=FALSE,eval=FALSE}
+setwd(".")
+dir.create("data")
+dir.create("results")
+dir.create("figures")
+```
+
+<a name=id5></a>
+
+## 2.3 Selección de las muestras
+
+El archivo targets.csv y counts.csv contiene la información de las muestras de un estudio obtenido del repositorio (GTEx). Seleccionaremos 30 muestras aleatoriamente, 10 de cada grupo. 
+
+```{r read information, echo=FALSE,warning=FALSE}
+library(readr)
+targets <- read.csv("C:/Users/david/OneDrive/Escritorio/PAC1ADO/PAC2ADO/data/targets.csv",header=TRUE)
+head(targets)
+counts <- read.csv("C:/Users/david/OneDrive/Escritorio/PAC1ADO/PAC2ADO/data/counts.csv", sep = ";",header=TRUE,row.names=1)
+head(counts)
+```
+En el archivo counts, debemos modificar los nombres de las columnas dado que utilizan puntos en los nombres de muestra (por ejemplo GTEX.111CU.0226.SM.5GZXC), y en el archivo targets se emplean  líneas (GTEX-111CU-0226-SM-5GZXC) con la funcion gsub
+
+```{r change columns}
+colnames(counts)<-gsub("[.]","-",colnames(counts))
+
+```
+
+Mediante la función sample seleccionaremos aletaoriamente 10 muestras de cada grupo, en nuestro caso sin reemplazamiento:
+```{r aleat}
+set.seed(1456)
+targets_NIT<- subset(targets, targets$Group == "NIT")
+targets_SFI<- subset(targets, targets$Group == "SFI")
+targets_ELI<- subset(targets, targets$Group == "ELI")
+```
+
+
+```{r}
+NIT_10<-targets_NIT[sample(1:nrow(targets_NIT),10),]
+SFI_10<-targets_SFI[sample(1:nrow(targets_SFI),10),]
+ELI_10<-targets_ELI[sample(1:nrow(targets_ELI),10),]
+targets_muestras<-rbind(NIT_10,SFI_10,ELI_10)
+
+```
+
+```{r}
+counts_muestras<-counts[,targets_muestras$Sample_Name]
+nombres_columnas <- c(paste("NIT", c(1:10), sep = "_"), paste("SFI", c(1:10), sep = "_"), paste("ELI", c(1:10), sep = "_"))
+colnames(counts_muestras) <- nombres_columnas
+coldata_muestras<-targets_muestras[,c("Group","Sample_Name")]
+head(coldata_muestras)
+```
+
+<a name=id6></a>
+
+## 3.Materiales y métodos
+
+<a name=id7></a>
+
+## 3.1. Creación del objeto DESeqDataSet
+
+Construiremos el objeto DESeqDataSet a partir de los datos generados counts_muestras y coldata_muestras.
+```{r dds,echo=FALSE,include=FALSE,message=FALSE}
+library(DESeq2)
+dds<- DESeqDataSetFromMatrix(countData=counts_muestras,colData=coldata_muestras,design=~Group)
+mcols(dds)<-DataFrame(mcols(dds),data.frame(genes=rownames(counts_muestras)))
+nrow(dds)
+```
+
+<a name=id8></a>
+
+## 3.2.Filtrado de los datos
+
+El filtradose lo realizamos para descartar los counts bajos y optimizar el tiempo de computación y el efecto del ruido, tendremos en cuenta los genes con una expresión superior o igual a 10. 
+
+
+```{r}
+dds<-dds[rowSums(counts(dds))>=5,]
+nrow(dds)
+```
+De 56202 gracias al prefiltrado obtenemos 39443 genes
+
+<a name=id9></a>
+
+## 3.3.Estabilización de la varianza
+
+Efectuaremos un proceso de normalización con el método VST (variancde stabilizaing transformation) generando el objeto "vsd"
+```{r}
+vsd<-vst(dds,blind=FALSE)
+head(assay(vsd),3)
+vsd
+```
+
+<a name=id10></a>
+
+## 3.4.Heatmap
+
+Con el objeto vsd genearmos un heatmap para visualizar las distancias entre las muestras, a mayor tonalidad mayor proximidad. 
+
+```{r}
+sampleDists<-dist(t(assay(vsd)))
+```
+
+
+```{r message=FALSE,fig.cap="Figura 1.Heatmap de la agupación entre muestras", fig.align='center', fig.width=6, fig.height=4}
+library("pheatmap")
+library("RColorBrewer")
+sampleDistMatrix <- as.matrix( sampleDists )
+rownames(sampleDistMatrix) <- paste( vsd$dex, vsd$cell, sep = " - " )
+colnames(sampleDistMatrix) <- NULL
+colors <- colorRampPalette( rev(brewer.pal(9, "Blues")) )(255)
+pheatmap(sampleDistMatrix,
+         clustering_distance_rows = sampleDists,
+         clustering_distance_cols = sampleDists,
+         col = colors)
+```
+
+<a name=id11></a>
+
+## 3.5. Análisis de componentes principales (PCA)
+
+Gracias al gráfico PCA observamos la distribución de los tres grupos.
+```{r fig.align='center',fig.cap="Figura 2.Análisis de componentes principales", fig.width=5, fig.height=5}
+library(DESeq2)
+plotPCA(vsd, intgroup = c("Group"))
+
+```
+En la figura  vemos que  el primer componente (PC1)representa el 70% de la variabilidad total, mientras que el segundo componente (PC2) acumula el 6% de los datos normalizados.
+
+```{r PCApdf, include=FALSE}
+pdf(file = "PCAsampleGroups.pdf")
+plotPCA(vsd, intgroup = c("Group"))
+dev.off()
+```
+
+<a name=id12></a>
+
+## 3.6.Análisis de expresión diferencial
+
+Para realizar el análisis de expresión deiferencial emplearemos la función DeSeq() de la libreria DESeq2 con los datos filtrados. El análisis de expresión génica se llevará a cabo basandonos en la distribución bionmial negativa
+```{r}
+library(DESeq2)
+dds <- DESeq(dds, parallel =TRUE)
+res <- results(dds)
+summary(res)
+```
+
+<a name=id13></a>
+
+## 3.7.Plot MA de comparación SFI vs NIT
+
+Obtenemos la tabla de resultados de la comparación SFI vs NIT 
+
+```{r}
+
+sfi_nit<-results(dds,contrast=c("Group","SFI","NIT"),alpha=0.05)
+summary(sfi_nit)
+table(sfi_nit$adj<0.05)
+
+```
+
+```{r echo=FALSE, fig.cap="Figura 3.Comparación SFI vs NIT", fig.align='center'}
+library(apeglm)
+ylim <- c(-4,5)
+xlim <- c(1e-2,10)
+plotMA(sfi_nit, xlim=xlim, ylim=ylim, main="SFI vs NIT",hl.col=c("blue","red"))
+```
+
+<a name=id14></a>
+
+## 3.8. Plot MA de omparación ELI vs NIT
+
+```{r}
+
+eli_nit<-results(dds,contrast=c("Group","ELI","NIT"),alpha=0.05)
+summary(eli_nit)
+table(eli_nit$adj<0.05)
+```
+```{r echo=FALSE,fig.cap="Figura 4.Comparación ELI vs NIT", fig.align='center'}
+library(apeglm)
+ylim <- c(-4,5)
+xlim <- c(1e-2,10)
+plotMA(eli_nit, xlim=xlim, ylim=ylim, main="ELI vs NIT",hl.col=c("blue","red"))
+```
+
+```{r}
+
+eli_sfi<-results(dds,contrast=c("Group","ELI","SFI"),alpha=0.05)
+summary(eli_sfi)
+table(eli_sfi$adj<0.05)
+```
+
+<a name=id15></a>
+
+## 3.9 Plot MA de comparación ELI vs SFI
+
+```{r echo=FALSE,fig.cap="Figura 5.Comparación ELI vs SFI", fig.align='center'}
+library(apeglm)
+ylim <- c(-4,5)
+xlim <- c(1e-2,10)
+plotMA(eli_sfi, xlim=xlim, ylim=ylim, main="ELI vs SFI",hl.col=c("blue","yellow"))
+
+```
+
+
+En los tres gráficos observamos diferencias entre las comparaciones, siendo las dos últimas donde existe una mayor sobreexpresión génica.
+
+<a name=id16></a>
+
+## 3.10. Diagrama de Venn
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.cap="Figura 6.Diagrama de Venn de las tres comparaciones",fig.align='center'}
+
+library(VennDiagram)
+sfi_nit_adj<-subset(sfi_nit,padj<0.05)
+eli_nit_adj<-subset(eli_nit,padj<0.05)
+eli_sfi_adj<-subset(eli_sfi,padj<0.05)
+venn_data <- venn.diagram(list(SFIvsNIT =rownames(sfi_nit_adj),
+                        ELIvsNIT = rownames(eli_nit_adj),
+                        ELIvsSFI = rownames(eli_sfi_adj)),
+                        filename=NULL,
+                        fill=c("dodgerblue","goldenrod1","orchid3"),
+                        cat.fontface="bold",
+                        cat.default.pos="outer",
+                        cat.fontfamily="sans")
+grid.newpage()
+grid.draw(venn_data)
+```
+El Diagrama de Venn nos permite de una manera muy visual ver el número de genes en común que hay entre las tres comparaciones. 
+
+<a name=id17></a>
+
+## 3.11 Heatmap de los 10 genes más significativos
+
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.cap="Figura 7.Heatmap con los 10 genes más significativos",fig.align='center'}
+library("genefilter")
+topVarGenes <- head(order(rowVars(assay(vsd)), decreasing = TRUE), 10)
+mat  <- assay(vsd)[ topVarGenes, ]
+mat  <- mat - rowMeans(mat)
+anno <- as.data.frame(colData(vsd)[, c("Group")])
+rownames(anno) <- colnames(vsd)
+pheatmap(mat, annotation_col = anno)
+```
+
+El heatmap nos permite ver las diferencias a nivel de expresión de los 10 genes más significativos de los tres grupos. 
+
+<a name=id18></a>
+
+## 3.12.Anotación de los genes 
+
+```{r}
+library("AnnotationDbi")
+library("org.Hs.eg.db")
+columns(org.Hs.eg.db)
+sfi_nit$symbol <- mapIds(org.Hs.eg.db,
+                     keys=gsub("\\..*", "", row.names(sfi_nit), fixed = FALSE), 
+                     column="SYMBOL",
+                     keytype="ENSEMBL",
+                     multiVals="first")
+sfi_nit$entrez <- mapIds(org.Hs.eg.db,
+                     keys=gsub("\\..*", "", row.names(sfi_nit), fixed = FALSE),
+                     column="ENTREZID",
+                     keytype="ENSEMBL",
+                     multiVals="first")
+resOrdered1 <- sfi_nit[order(sfi_nit$pvalue),]
+head(resOrdered1)
+```
+```{r}
+resOrderedDF <- as.data.frame(resOrdered1)
+write.csv(resOrderedDF, file = "results1.csv")
+```
+
+
+
+
+```{r}
+library("AnnotationDbi")
+library("org.Hs.eg.db")
+columns(org.Hs.eg.db)
+eli_nit$symbol <- mapIds(org.Hs.eg.db,
+                     keys=gsub("\\..*", "", row.names(sfi_nit), fixed = FALSE), 
+                     column="SYMBOL",
+                     keytype="ENSEMBL",
+                     multiVals="first")
+eli_nit$entrez <- mapIds(org.Hs.eg.db,
+                     keys=gsub("\\..*", "", row.names(sfi_nit), fixed = FALSE),
+                     column="ENTREZID",
+                     keytype="ENSEMBL",
+                     multiVals="first")
+resOrdered2 <- eli_nit[order(eli_nit$pvalue),]
+head(resOrdered2)
+```
+```{r}
+resOrderedDF2 <- as.data.frame(resOrdered2)
+write.csv(resOrderedDF, file = "results2.csv")
+```
+
+```{r}
+library("AnnotationDbi")
+library("org.Hs.eg.db")
+columns(org.Hs.eg.db)
+eli_sfi$symbol <- mapIds(org.Hs.eg.db,
+                     keys=gsub("\\..*", "", row.names(sfi_nit), fixed = FALSE), 
+                     column="SYMBOL",
+                     keytype="ENSEMBL",
+                     multiVals="first")
+eli_sfi$entrez <- mapIds(org.Hs.eg.db,
+                     keys=gsub("\\..*", "", row.names(sfi_nit), fixed = FALSE),
+                     column="ENTREZID",
+                     keytype="ENSEMBL",
+                     multiVals="first")
+resOrdered3 <- eli_sfi[order(eli_sfi$pvalue),]
+head(resOrdered3)
+```
+```{r}
+resOrderedDF3 <- as.data.frame(resOrdered3)
+write.csv(resOrderedDF, file = "results3.csv")
+```
+
+<a name=id19></a>
+
+## 3.13. Identificación de los genes
+
+```{r gens S_E, fig.cap= "comparación SFI-NIST", echo = FALSE, message=FALSE}
+library(printr)
+head(resOrdered1, 5)
+```
+
+```{r gens N_E, fig.cap= "Comparación NIT-ELI", echo = FALSE, message=FALSE}
+library(printr)
+head(resOrdered2, 5)
+```
+
+```{r gens S_N, fig.cap= "Comparación ELI-SFI", echo = FALSE, message=FALSE}
+library(printr)
+head(resOrdered3, 5)
+```
+En las tres tablas anteriores se muestran los 5 primeros genes de cada comparación con mayor expresión, ordenados en función del p- valor. 
+
+<a name=id20></a>
+
+## 4.Discusión
+
+En el informe se ha trabajado con una gran cantidad de genes que presentan diferente expresión según la infiltración efectuada. Se nos ha proporcionado unos datos preprocesados en una tabla de contajes y extraerlos de forma aleatoria para que tengamos un número cómodo de muestras para analizar y que la complejidad del estudio y realización de la pec no sea tan árdua, en contrapartida el trabajar con pocas muestras es menos correcto estadísticamente. 
+
+Técnicamente hemos tenido problemas para efectuar la parte de significación biológica y no hemos podido completar el estudio totalmente, concretamente nos ha sido imposible que la libreria ReactomePA nos funcionara.  
+
+<a name=id21></a>
+
+## 5.Apéndice
+
+
+El siguiente informe, código y datos generados en este trabajo se pueden encontrar en el repositorio [https://github.com/dcc1978/PEC2-RNAseq]
+
+<a name=id22></a>
+
+## 6.Bibliografia
+
+https://github.com/ASPteaching/Omics_data_analysis-Case_study_2-RNA-seq
+
+Introduction to DGE: Normalization. https://hbctraining.github.io/DGE_workshop/lessons/02_DGE_count_normalization.html
+
+Introduction to DGE: Differential expression analysis with DESeq2. https://hbctraining.github.io/DGE_workshop/lessons/04_DGE_DESeq2_analysis.html
+
+Introduction to DGE: Functional analysis. https://hbctraining.github.io/DGE_workshop/lessons/09_functional_analysis.html
+
+Love MI, Anders S, Huber W (2020). "Analyzing RNA-seq data with DESeq2".

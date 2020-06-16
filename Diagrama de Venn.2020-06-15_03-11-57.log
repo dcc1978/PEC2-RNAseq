@@ -1,0 +1,13 @@
+INFO [2020-06-15 03:11:57] [[1]]
+INFO [2020-06-15 03:11:57] list(SFIvsNIT = rownames(sfi_nit_adj), ELIvsNIT = rownames(eli_nit_adj), 
+INFO [2020-06-15 03:11:57]     ELIvsSFI = rownames(eli_sfi_adj))
+INFO [2020-06-15 03:11:57] 
+INFO [2020-06-15 03:11:57] $filename
+INFO [2020-06-15 03:11:57] [1] "Diagrama de Venn"
+INFO [2020-06-15 03:11:57] 
+INFO [2020-06-15 03:11:57] $fill
+INFO [2020-06-15 03:11:57] c("dodgerblue", "goldenrod1", "orchid3")
+INFO [2020-06-15 03:11:57] 
+INFO [2020-06-15 03:11:57] $cat.fontface
+INFO [2020-06-15 03:11:57] [1] "bold"
+INFO [2020-06-15 03:11:57] 
